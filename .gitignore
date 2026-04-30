@@ -1,0 +1,49 @@
+# ============================================================
+# Financial NLP Chatbot — Git Ignore Rules
+# ============================================================
+
+# --- Environment & Secrets ---
+.env
+*.env.local
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+
+# --- Virtual Environment ---
+venv/
+.venv/
+env/
+
+# --- Model Artifacts (large binary files) ---
+models/intent_classifier/baseline/model.pkl
+models/intent_classifier/baseline/vectorizer.pkl
+models/intent_classifier/bert/saved_model/
+models/ner/saved_model/
+data/spacy_training/*.spacy
+
+# --- IDE ---
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# --- OS ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Logs ---
+*.log
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Streamlit ---
+.streamlit/secrets.toml

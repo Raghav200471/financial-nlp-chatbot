@@ -1,0 +1,410 @@
+[
+  {
+    "text": "What is the price of AAPL?",
+    "entities": [[21, 25, "TICKER"]]
+  },
+  {
+    "text": "Show me the stock price of Tesla",
+    "entities": [[27, 32, "TICKER"]]
+  },
+  {
+    "text": "How much is GOOGL trading at?",
+    "entities": [[12, 17, "TICKER"]]
+  },
+  {
+    "text": "Get me RELIANCE.NS price",
+    "entities": [[7, 19, "TICKER"]]
+  },
+  {
+    "text": "What's Microsoft stock at today?",
+    "entities": [[7, 16, "TICKER"]]
+  },
+  {
+    "text": "Price of AMZN",
+    "entities": [[9, 13, "TICKER"]]
+  },
+  {
+    "text": "Tell me the share price of Infosys",
+    "entities": [[27, 34, "TICKER"]]
+  },
+  {
+    "text": "Can you check the stock price for TSLA?",
+    "entities": [[34, 38, "TICKER"]]
+  },
+  {
+    "text": "What is NVIDIA stock worth right now?",
+    "entities": [[8, 14, "TICKER"]]
+  },
+  {
+    "text": "How is HDFC bank stock doing?",
+    "entities": [[7, 11, "TICKER"]]
+  },
+  {
+    "text": "Show me price of TCS",
+    "entities": [[17, 20, "TICKER"]]
+  },
+  {
+    "text": "I want to know the price of Apple stock",
+    "entities": [[27, 32, "TICKER"]]
+  },
+  {
+    "text": "Stock quote for MSFT",
+    "entities": [[16, 20, "TICKER"]]
+  },
+  {
+    "text": "How is INFY trading today?",
+    "entities": [[7, 11, "TICKER"]]
+  },
+  {
+    "text": "Current market price of Tata Motors",
+    "entities": [[24, 35, "TICKER"]]
+  },
+  {
+    "text": "Calculate EMI for 10 lakh at 8.5% for 20 years",
+    "entities": [[18, 25, "AMOUNT"], [29, 33, "RATE"], [38, 46, "DURATION"]]
+  },
+  {
+    "text": "What will be my EMI for a 50 lakh loan at 7% for 15 years?",
+    "entities": [[26, 33, "AMOUNT"], [42, 44, "RATE"], [49, 57, "DURATION"]]
+  },
+  {
+    "text": "EMI for 25 lakh home loan at 9 percent for 10 years",
+    "entities": [[8, 15, "AMOUNT"], [29, 38, "RATE"], [43, 51, "DURATION"]]
+  },
+  {
+    "text": "How much EMI for 30 lakh at 8% over 20 years?",
+    "entities": [[17, 24, "AMOUNT"], [28, 30, "RATE"], [36, 44, "DURATION"]]
+  },
+  {
+    "text": "Tell me the monthly installment for 15 lakh at 7.5% for 5 years",
+    "entities": [[36, 43, "AMOUNT"], [47, 51, "RATE"], [56, 63, "DURATION"]]
+  },
+  {
+    "text": "If I borrow 20 lakh at 9% for 10 years what is my EMI?",
+    "entities": [[12, 19, "AMOUNT"], [23, 25, "RATE"], [30, 38, "DURATION"]]
+  },
+  {
+    "text": "Calculate my monthly payment for a 40 lakh loan at 8.5% for 25 years",
+    "entities": [[35, 42, "AMOUNT"], [51, 55, "RATE"], [60, 68, "DURATION"]]
+  },
+  {
+    "text": "EMI calculator for 5 lakh at 12% for 3 years",
+    "entities": [[19, 25, "AMOUNT"], [29, 32, "RATE"], [37, 44, "DURATION"]]
+  },
+  {
+    "text": "What would be the EMI on a car loan of 8 lakh at 10% for 5 years?",
+    "entities": [[39, 45, "AMOUNT"], [49, 52, "RATE"], [57, 64, "DURATION"]]
+  },
+  {
+    "text": "Monthly installment for a loan of 12 lakh at 11% for 7 years",
+    "entities": [[34, 41, "AMOUNT"], [45, 48, "RATE"], [53, 60, "DURATION"]]
+  },
+  {
+    "text": "USD to INR rate",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "Convert 100 EUR to USD",
+    "entities": [[8, 11, "AMOUNT"], [12, 15, "CURRENCY"], [19, 22, "CURRENCY"]]
+  },
+  {
+    "text": "What is the exchange rate for GBP to INR?",
+    "entities": [[29, 32, "CURRENCY"], [36, 39, "CURRENCY"]]
+  },
+  {
+    "text": "How much is 50 USD in Indian rupees?",
+    "entities": [[12, 14, "AMOUNT"], [15, 18, "CURRENCY"]]
+  },
+  {
+    "text": "Exchange rate for Euro to Dollar",
+    "entities": [[18, 22, "CURRENCY"], [26, 32, "CURRENCY"]]
+  },
+  {
+    "text": "Convert 1000 JPY to USD",
+    "entities": [[8, 12, "AMOUNT"], [13, 16, "CURRENCY"], [20, 23, "CURRENCY"]]
+  },
+  {
+    "text": "Currency rate for AUD to INR",
+    "entities": [[18, 21, "CURRENCY"], [25, 28, "CURRENCY"]]
+  },
+  {
+    "text": "Convert 200 CAD to INR",
+    "entities": [[8, 11, "AMOUNT"], [12, 15, "CURRENCY"], [19, 22, "CURRENCY"]]
+  },
+  {
+    "text": "SGD to INR conversion rate",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "AED to INR rate today",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "Convert 500 USD to EUR",
+    "entities": [[8, 11, "AMOUNT"], [12, 15, "CURRENCY"], [19, 22, "CURRENCY"]]
+  },
+  {
+    "text": "Can I get a loan with 30000 salary?",
+    "entities": [[22, 27, "AMOUNT"]]
+  },
+  {
+    "text": "Home loan eligibility for 50000 monthly income",
+    "entities": [[25, 30, "AMOUNT"]]
+  },
+  {
+    "text": "Loan eligibility for 10 lakh amount",
+    "entities": [[21, 28, "AMOUNT"]]
+  },
+  {
+    "text": "Can I get a 50 lakh home loan?",
+    "entities": [[12, 19, "AMOUNT"], [20, 29, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Am I eligible for a 20 lakh personal loan?",
+    "entities": [[20, 27, "AMOUNT"], [28, 41, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Check eligibility for 75 lakh home loan",
+    "entities": [[22, 29, "AMOUNT"], [30, 39, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Eligibility check for a loan of 15 lakh for 10 years",
+    "entities": [[32, 39, "AMOUNT"], [44, 52, "DURATION"]]
+  },
+  {
+    "text": "Home loan for 60 lakh, check if I qualify",
+    "entities": [[0, 9, "LOAN_TYPE"], [14, 21, "AMOUNT"]]
+  },
+  {
+    "text": "Loan eligibility check for 35 lakh at 8% for 20 years",
+    "entities": [[27, 34, "AMOUNT"], [38, 40, "RATE"], [45, 53, "DURATION"]]
+  },
+  {
+    "text": "What is the maximum loan I'm eligible for with 55000 per month salary?",
+    "entities": [[48, 53, "AMOUNT"]]
+  },
+  {
+    "text": "What is a home loan?",
+    "entities": [[10, 19, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Tell me about personal loans",
+    "entities": [[14, 28, "LOAN_TYPE"]]
+  },
+  {
+    "text": "How does a car loan work?",
+    "entities": [[11, 19, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Tell me about education loans",
+    "entities": [[14, 29, "LOAN_TYPE"]]
+  },
+  {
+    "text": "How to apply for a home loan?",
+    "entities": [[19, 28, "LOAN_TYPE"]]
+  },
+  {
+    "text": "What is loan against property?",
+    "entities": [[8, 29, "LOAN_TYPE"]]
+  },
+  {
+    "text": "Tell me about gold loan",
+    "entities": [[14, 23, "LOAN_TYPE"]]
+  },
+  {
+    "text": "What is the price of NFLX?",
+    "entities": [[21, 25, "TICKER"]]
+  },
+  {
+    "text": "Check KOTAKBANK stock for me",
+    "entities": [[6, 15, "TICKER"]]
+  },
+  {
+    "text": "Share price of Bharti Airtel",
+    "entities": [[15, 28, "TICKER"]]
+  },
+  {
+    "text": "Display ICICI bank stock price",
+    "entities": [[8, 13, "TICKER"]]
+  },
+  {
+    "text": "What is the market price of MARUTI?",
+    "entities": [[28, 34, "TICKER"]]
+  },
+  {
+    "text": "Show me the latest price of SBIN",
+    "entities": [[28, 32, "TICKER"]]
+  },
+  {
+    "text": "What's the share value of Bajaj Finance?",
+    "entities": [[26, 39, "TICKER"]]
+  },
+  {
+    "text": "I took a loan of 35 lakh at 8% for 20 years",
+    "entities": [[18, 25, "AMOUNT"], [29, 31, "RATE"], [36, 44, "DURATION"]]
+  },
+  {
+    "text": "EMI for 3 lakh personal loan at 14% for 3 years",
+    "entities": [[8, 14, "AMOUNT"], [15, 28, "LOAN_TYPE"], [32, 35, "RATE"], [40, 47, "DURATION"]]
+  },
+  {
+    "text": "Car loan of 8 lakh at 10% for 5 years",
+    "entities": [[0, 8, "LOAN_TYPE"], [12, 18, "AMOUNT"], [22, 25, "RATE"], [30, 37, "DURATION"]]
+  },
+  {
+    "text": "Education loan of 10 lakh at 10% for 5 years",
+    "entities": [[0, 14, "LOAN_TYPE"], [18, 25, "AMOUNT"], [29, 32, "RATE"], [37, 44, "DURATION"]]
+  },
+  {
+    "text": "What is the exchange rate from USD to INR today?",
+    "entities": [[31, 34, "CURRENCY"], [38, 41, "CURRENCY"]]
+  },
+  {
+    "text": "How many rupees for 1 euro?",
+    "entities": [[20, 21, "AMOUNT"]]
+  },
+  {
+    "text": "NZD to USD exchange rate",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "Convert 75 USD to Japanese yen",
+    "entities": [[8, 10, "AMOUNT"], [11, 14, "CURRENCY"]]
+  },
+  {
+    "text": "SAR to INR conversion",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "Help me calculate EMI for 60 lakh at 7.25% for 30 years",
+    "entities": [[26, 33, "AMOUNT"], [37, 42, "RATE"], [47, 55, "DURATION"]]
+  },
+  {
+    "text": "Compute EMI for home loan of 90 lakh at 8.25% for 30 years",
+    "entities": [[16, 25, "LOAN_TYPE"], [29, 36, "AMOUNT"], [40, 45, "RATE"], [50, 58, "DURATION"]]
+  },
+  {
+    "text": "My loan is 18 lakh at 10.5% for 8 years",
+    "entities": [[11, 18, "AMOUNT"], [22, 27, "RATE"], [32, 39, "DURATION"]]
+  },
+  {
+    "text": "Find monthly EMI for 22 lakh at 9.5% for 12 years",
+    "entities": [[21, 28, "AMOUNT"], [32, 36, "RATE"], [41, 49, "DURATION"]]
+  },
+  {
+    "text": "Loan EMI for 55 lakh at 7.75% for 20 years",
+    "entities": [[13, 20, "AMOUNT"], [24, 29, "RATE"], [34, 42, "DURATION"]]
+  },
+  {
+    "text": "Calculate loan repayment for 75 lakh at 7% for 25 years",
+    "entities": [[29, 36, "AMOUNT"], [40, 42, "RATE"], [47, 55, "DURATION"]]
+  },
+  {
+    "text": "EMI amount for 6 lakh at 13% for 4 years",
+    "entities": [[15, 21, "AMOUNT"], [25, 28, "RATE"], [33, 40, "DURATION"]]
+  },
+  {
+    "text": "Tell me EMI for education loan of 10 lakh at 10% for 5 years",
+    "entities": [[16, 30, "LOAN_TYPE"], [34, 41, "AMOUNT"], [45, 48, "RATE"], [53, 60, "DURATION"]]
+  },
+  {
+    "text": "Calculate monthly payment for 80 lakh home loan at 6.75% for 20 years",
+    "entities": [[30, 37, "AMOUNT"], [38, 47, "LOAN_TYPE"], [51, 56, "RATE"], [61, 69, "DURATION"]]
+  },
+  {
+    "text": "What will I pay per month for 42 lakh at 8.5% for 18 years?",
+    "entities": [[30, 37, "AMOUNT"], [41, 45, "RATE"], [50, 58, "DURATION"]]
+  },
+  {
+    "text": "How much is the EMI for 95 lakh at 7.5% for 30 years?",
+    "entities": [[24, 31, "AMOUNT"], [35, 39, "RATE"], [44, 52, "DURATION"]]
+  },
+  {
+    "text": "EMI for vehicle loan of 4 lakh at 12% for 3 years",
+    "entities": [[8, 20, "LOAN_TYPE"], [24, 30, "AMOUNT"], [34, 37, "RATE"], [42, 49, "DURATION"]]
+  },
+  {
+    "text": "What is the current dollar rate?",
+    "entities": []
+  },
+  {
+    "text": "What is a savings account?",
+    "entities": []
+  },
+  {
+    "text": "How does fixed deposit work?",
+    "entities": []
+  },
+  {
+    "text": "What is SIP?",
+    "entities": []
+  },
+  {
+    "text": "What is a credit score?",
+    "entities": []
+  },
+  {
+    "text": "Tell me about mutual funds",
+    "entities": []
+  },
+  {
+    "text": "How does compound interest work?",
+    "entities": []
+  },
+  {
+    "text": "What is a demat account?",
+    "entities": []
+  },
+  {
+    "text": "Tell me about PPF",
+    "entities": []
+  },
+  {
+    "text": "What is NPS?",
+    "entities": []
+  },
+  {
+    "text": "Explain Section 80C deductions",
+    "entities": []
+  },
+  {
+    "text": "What is TDS?",
+    "entities": []
+  },
+  {
+    "text": "What is GST?",
+    "entities": []
+  },
+  {
+    "text": "What is a dividend?",
+    "entities": []
+  },
+  {
+    "text": "How do index funds work?",
+    "entities": []
+  },
+  {
+    "text": "What is market capitalization?",
+    "entities": []
+  },
+  {
+    "text": "Explain equity vs debt funds",
+    "entities": []
+  },
+  {
+    "text": "What is portfolio diversification?",
+    "entities": []
+  },
+  {
+    "text": "How does inflation affect savings?",
+    "entities": []
+  },
+  {
+    "text": "What is insurance premium?",
+    "entities": []
+  },
+  {
+    "text": "Tell me about term insurance",
+    "entities": []
+  }
+]

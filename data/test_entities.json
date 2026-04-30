@@ -1,0 +1,62 @@
+[
+  {
+    "text": "current price of META",
+    "entities": [[17, 21, "TICKER"]]
+  },
+  {
+    "text": "stock quote for Reliance Industries",
+    "entities": [[16, 35, "TICKER"]]
+  },
+  {
+    "text": "what is amazon trading at today",
+    "entities": [[8, 14, "TICKER"]]
+  },
+  {
+    "text": "how much do i pay every month for 20 lakh loan at 7.5% for 10 years",
+    "entities": [[34, 41, "AMOUNT"], [50, 54, "RATE"], [59, 67, "DURATION"]]
+  },
+  {
+    "text": "calculate the emi on my 50 lakh home loan at 8.25% for a duration of 20 years",
+    "entities": [[24, 31, "AMOUNT"], [32, 41, "LOAN_TYPE"], [45, 50, "RATE"], [69, 77, "DURATION"]]
+  },
+  {
+    "text": "figure out the monthly payment for 5 lakh over 3 years at 9%",
+    "entities": [[35, 41, "AMOUNT"], [47, 54, "DURATION"], [58, 60, "RATE"]]
+  },
+  {
+    "text": "convert 50 british pounds to indian rupees",
+    "entities": [[8, 10, "AMOUNT"], [11, 25, "CURRENCY"], [29, 42, "CURRENCY"]]
+  },
+  {
+    "text": "usd to jpy",
+    "entities": [[0, 3, "CURRENCY"], [7, 10, "CURRENCY"]]
+  },
+  {
+    "text": "how many pesos can i get for 10 dollars",
+    "entities": [[9, 14, "CURRENCY"], [29, 31, "AMOUNT"], [32, 39, "CURRENCY"]]
+  },
+  {
+    "text": "exchange rate from eur to gbp",
+    "entities": [[19, 22, "CURRENCY"], [26, 29, "CURRENCY"]]
+  },
+  {
+    "text": "am i qualified for a 15 lakh loan if my salary is 30000",
+    "entities": [[21, 28, "AMOUNT"], [50, 55, "AMOUNT"]]
+  },
+  {
+    "text": "can i get a home loan with a cibil score of 650?",
+    "entities": [[12, 21, "LOAN_TYPE"]]
+  },
+  {
+    "text": "how do i apply for a student loan",
+    "entities": [[21, 33, "LOAN_TYPE"]]
+  },
+  {
+    "text": "tell me more about getting a mortgage",
+    "entities": [[29, 37, "LOAN_TYPE"]]
+  },
+  {
+    "text": "check if i am eligible to borrow 5 lakhs",
+    "entities": [[33, 40, "AMOUNT"]]
+  }
+]

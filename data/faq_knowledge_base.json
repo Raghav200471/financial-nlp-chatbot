@@ -1,0 +1,280 @@
+{
+  "faqs": [
+    {
+      "question": "What is a savings account?",
+      "answer": "A savings account is a deposit account held at a bank that earns interest on your balance. It provides a safe place to store money while earning a small return. Most savings accounts offer easy access to your funds, though some may limit the number of withdrawals per month.",
+      "category": "banking",
+      "tags": ["savings", "account", "interest", "deposit"]
+    },
+    {
+      "question": "What is a current account?",
+      "answer": "A current account (or checking account) is a type of bank account designed for frequent transactions. Unlike savings accounts, current accounts typically don't earn interest but offer unlimited transactions, making them ideal for businesses and individuals with high transaction volumes.",
+      "category": "banking",
+      "tags": ["current", "account", "transactions", "business"]
+    },
+    {
+      "question": "What is the difference between savings and current account?",
+      "answer": "A savings account earns interest and is meant for saving money with limited transactions. A current account is designed for frequent daily transactions, typically earns no interest, and is preferred by businesses. Savings accounts usually have lower minimum balance requirements.",
+      "category": "banking",
+      "tags": ["savings", "current", "comparison", "account"]
+    },
+    {
+      "question": "What is a fixed deposit?",
+      "answer": "A Fixed Deposit (FD) is an investment where you deposit a lump sum for a fixed period at a predetermined interest rate. FDs offer higher interest rates than savings accounts and are considered low-risk investments. Premature withdrawal may attract a penalty.",
+      "category": "banking",
+      "tags": ["fixed deposit", "fd", "interest", "investment"]
+    },
+    {
+      "question": "What is a recurring deposit?",
+      "answer": "A Recurring Deposit (RD) allows you to invest a fixed amount every month for a predetermined period. It earns interest similar to a fixed deposit and is ideal for building savings habits through regular monthly contributions.",
+      "category": "banking",
+      "tags": ["recurring deposit", "rd", "monthly", "savings"]
+    },
+    {
+      "question": "What is EMI?",
+      "answer": "EMI (Equated Monthly Installment) is a fixed payment amount made by a borrower to a lender at a specified date each calendar month. Each EMI payment consists of two components: principal repayment and interest payment. The proportion of principal increases over time while the interest component decreases.",
+      "category": "loans",
+      "tags": ["emi", "loan", "installment", "payment"]
+    },
+    {
+      "question": "What is a home loan?",
+      "answer": "A home loan (or housing loan) is a secured loan provided by banks and financial institutions to purchase, construct, or renovate a residential property. The property itself serves as collateral. Home loans typically have tenures of 15-30 years and offer tax benefits under Section 80C and Section 24 of the Income Tax Act.",
+      "category": "loans",
+      "tags": ["home loan", "mortgage", "property", "housing"]
+    },
+    {
+      "question": "What is a personal loan?",
+      "answer": "A personal loan is an unsecured loan that doesn't require any collateral. It can be used for any purpose — medical emergencies, travel, wedding, or debt consolidation. Personal loans typically have higher interest rates (10-24%) compared to secured loans due to the absence of collateral.",
+      "category": "loans",
+      "tags": ["personal loan", "unsecured", "credit"]
+    },
+    {
+      "question": "What is a car loan?",
+      "answer": "A car loan is a secured loan used to purchase a vehicle. The car itself serves as collateral. Car loans typically have tenures of 1-7 years with interest rates ranging from 7-12%. The loan amount usually covers up to 80-90% of the vehicle's on-road price.",
+      "category": "loans",
+      "tags": ["car loan", "vehicle", "auto", "secured"]
+    },
+    {
+      "question": "What is an education loan?",
+      "answer": "An education loan helps students finance their higher education expenses including tuition fees, hostel charges, and other academic costs. These loans typically have a moratorium period (course duration + 6-12 months) before repayment begins. Interest paid on education loans is tax-deductible under Section 80E.",
+      "category": "loans",
+      "tags": ["education loan", "student", "tuition", "study"]
+    },
+    {
+      "question": "What is loan eligibility?",
+      "answer": "Loan eligibility refers to the criteria a borrower must meet to qualify for a loan. Key factors include: income level, credit score (CIBIL), employment stability, existing debts, age, and the debt-to-income ratio. Most banks require a minimum CIBIL score of 700+ for personal and home loans.",
+      "category": "loans",
+      "tags": ["eligibility", "criteria", "cibil", "qualification"]
+    },
+    {
+      "question": "What is CIBIL score?",
+      "answer": "CIBIL score is a three-digit numeric summary (300-900) of your credit history, issued by TransUnion CIBIL. A score of 750+ is considered good and improves your chances of loan approval. The score is based on your payment history, credit utilization, credit age, credit mix, and recent inquiries.",
+      "category": "banking",
+      "tags": ["cibil", "credit score", "credit history", "rating"]
+    },
+    {
+      "question": "How to improve CIBIL score?",
+      "answer": "To improve your CIBIL score: (1) Pay all EMIs and credit card bills on time, (2) Keep credit utilization below 30%, (3) Avoid multiple loan applications in a short period, (4) Maintain a healthy mix of secured and unsecured loans, (5) Keep old credit accounts active, and (6) Regularly check your credit report for errors.",
+      "category": "banking",
+      "tags": ["cibil", "improve", "credit", "tips"]
+    },
+    {
+      "question": "What is SIP?",
+      "answer": "SIP (Systematic Investment Plan) is a method of investing in mutual funds where you invest a fixed amount at regular intervals (usually monthly). SIP helps in rupee cost averaging — you buy more units when prices are low and fewer units when prices are high, reducing the impact of market volatility over time.",
+      "category": "investment",
+      "tags": ["sip", "mutual fund", "systematic", "investment"]
+    },
+    {
+      "question": "What is a mutual fund?",
+      "answer": "A mutual fund is an investment vehicle that pools money from multiple investors to invest in a diversified portfolio of stocks, bonds, or other securities. Managed by professional fund managers, mutual funds offer diversification, transparency, and regulated investment options for retail investors.",
+      "category": "investment",
+      "tags": ["mutual fund", "mutual funds", "investment", "diversification", "portfolio", "explain", "meaning", "definition", "what is"]
+    },
+    {
+      "question": "What is a demat account?",
+      "answer": "A Demat (Dematerialized) account holds your shares and securities in electronic format. Just like a bank account holds money, a demat account holds stocks, bonds, mutual fund units, and other financial securities. It's mandatory for trading in the Indian stock market.",
+      "category": "investment",
+      "tags": ["demat", "shares", "stock market", "electronic"]
+    },
+    {
+      "question": "What is PPF?",
+      "answer": "PPF (Public Provident Fund) is a government-backed savings scheme with a lock-in period of 15 years. It offers attractive interest rates (currently around 7.1%), tax benefits under Section 80C, and the interest earned is tax-free. Maximum annual contribution is ₹1.5 lakh.",
+      "category": "investment",
+      "tags": ["ppf", "provident fund", "government", "tax-free"]
+    },
+    {
+      "question": "What is NPS?",
+      "answer": "NPS (National Pension System) is a voluntary retirement savings scheme managed by PFRDA. It allows contributions during your working life to build a retirement corpus. At retirement, you can withdraw up to 60% as a lump sum and must use at least 40% to purchase an annuity. Additional tax benefit of ₹50,000 under Section 80CCD(1B).",
+      "category": "investment",
+      "tags": ["nps", "pension", "retirement", "pfrda"]
+    },
+    {
+      "question": "What is compound interest?",
+      "answer": "Compound interest is interest calculated on both the initial principal and the accumulated interest from previous periods. Unlike simple interest (calculated only on principal), compound interest grows your money faster over time. The formula is A = P(1 + r/n)^(nt), where P is principal, r is rate, n is compounding frequency, and t is time.",
+      "category": "banking",
+      "tags": ["compound interest", "interest", "growth", "formula"]
+    },
+    {
+      "question": "What is income tax?",
+      "answer": "Income tax is a direct tax levied by the government on income earned by individuals, businesses, and other entities during a financial year. In India, income tax is governed by the Income Tax Act, 1961, with tax rates based on income slabs that are revised in the annual Union Budget.",
+      "category": "tax",
+      "tags": ["income tax", "tax", "government", "slabs"]
+    },
+    {
+      "question": "What are tax saving instruments?",
+      "answer": "Tax saving instruments include: (1) PPF — up to ₹1.5L under 80C, (2) ELSS mutual funds — 80C with 3-year lock-in, (3) NPS — additional ₹50K under 80CCD(1B), (4) Life insurance premiums — 80C, (5) NSC — 80C, (6) Tax-saving FDs — 80C with 5-year lock-in, (7) Health insurance — up to ₹25K under 80D.",
+      "category": "tax",
+      "tags": ["tax saving", "80c", "deduction", "investment"]
+    },
+    {
+      "question": "What is Section 80C?",
+      "answer": "Section 80C of the Income Tax Act allows individuals and HUFs to claim deductions up to ₹1.5 lakh per year from total income. Eligible investments include PPF, ELSS, life insurance premiums, NSC, 5-year FD, SSY, principal repayment of home loan, children's tuition fees, and EPF contributions.",
+      "category": "tax",
+      "tags": ["80c", "deduction", "tax saving", "investment"]
+    },
+    {
+      "question": "What is TDS?",
+      "answer": "TDS (Tax Deducted at Source) is a mechanism where the payer deducts tax at the time of making payments such as salary, rent, commission, or interest. The deducted amount is deposited with the government on behalf of the payee. TDS ensures regular collection of tax revenue and reduces tax evasion.",
+      "category": "tax",
+      "tags": ["tds", "tax", "deduction", "source"]
+    },
+    {
+      "question": "What is GST?",
+      "answer": "GST (Goods and Services Tax) is an indirect tax that replaced multiple cascading taxes in India on July 1, 2017. It's levied on the supply of goods and services at every stage of the supply chain. GST has four tax slabs: 5%, 12%, 18%, and 28%, with essential items either exempt or taxed at the lowest rate.",
+      "category": "tax",
+      "tags": ["gst", "indirect tax", "goods", "services"]
+    },
+    {
+      "question": "How to file income tax return?",
+      "answer": "To file ITR: (1) Gather documents — Form 16, bank statements, investment proofs, (2) Choose the correct ITR form based on your income source, (3) Login to the Income Tax e-filing portal (incometax.gov.in), (4) Fill in income details, deductions, and tax paid, (5) Verify using Aadhaar OTP, net banking, or DSC, (6) File before the deadline (usually July 31).",
+      "category": "tax",
+      "tags": ["itr", "filing", "return", "e-filing"]
+    },
+    {
+      "question": "What is EPF?",
+      "answer": "EPF (Employee Provident Fund) is a retirement benefit scheme where both the employer and employee contribute 12% of the employee's basic salary. Managed by EPFO, it earns interest (currently 8.15%) and offers tax benefits. The EPF corpus can be withdrawn fully upon retirement or partially for specific needs like home purchase or medical emergencies.",
+      "category": "investment",
+      "tags": ["epf", "provident fund", "retirement", "employer"]
+    },
+    {
+      "question": "What is a bond?",
+      "answer": "A bond is a fixed-income instrument where the investor lends money to an entity (corporate or government) for a defined period at a fixed interest rate (coupon rate). Bonds are considered lower-risk than stocks and provide regular income through interest payments. Government bonds (G-Secs) are considered virtually risk-free.",
+      "category": "investment",
+      "tags": ["bond", "fixed income", "coupon", "government"]
+    },
+    {
+      "question": "What is a stock?",
+      "answer": "A stock (or share/equity) represents ownership in a company. When you buy a stock, you become a partial owner and may benefit from price appreciation and dividends. Stocks are traded on exchanges like NSE and BSE, and their prices fluctuate based on company performance, market conditions, and investor sentiment.",
+      "category": "investment",
+      "tags": ["stock", "share", "equity", "ownership"]
+    },
+    {
+      "question": "What is a dividend?",
+      "answer": "A dividend is a portion of a company's profits distributed to its shareholders. Companies may pay dividends quarterly, semi-annually, or annually. Dividends can be in the form of cash or additional shares. Not all companies pay dividends — growth companies often reinvest profits back into the business instead.",
+      "category": "investment",
+      "tags": ["dividend", "profit", "shareholder", "income"]
+    },
+    {
+      "question": "What is market capitalization?",
+      "answer": "Market capitalization (market cap) is the total market value of a company's outstanding shares, calculated as share price × number of outstanding shares. Companies are classified as: Large-cap (₹20,000 Cr+), Mid-cap (₹5,000-20,000 Cr), and Small-cap (below ₹5,000 Cr). Market cap indicates a company's size and stability.",
+      "category": "investment",
+      "tags": ["market cap", "valuation", "large cap", "small cap"]
+    },
+    {
+      "question": "What is NAV in mutual funds?",
+      "answer": "NAV (Net Asset Value) is the per-unit market value of a mutual fund scheme. It is calculated as: (Total Assets - Total Liabilities) / Number of Outstanding Units. NAV is updated at the end of each trading day. When you invest in a mutual fund, you buy units at the current NAV.",
+      "category": "investment",
+      "tags": ["nav", "mutual fund", "unit price", "valuation"]
+    },
+    {
+      "question": "What is portfolio diversification?",
+      "answer": "Portfolio diversification is the strategy of spreading investments across different asset classes (stocks, bonds, real estate, gold), sectors, and geographies to reduce risk. The idea is that losses in one investment can be offset by gains in another, reducing the overall volatility of your portfolio.",
+      "category": "investment",
+      "tags": ["diversification", "portfolio", "risk", "asset allocation"]
+    },
+    {
+      "question": "What is inflation?",
+      "answer": "Inflation is the rate at which the general level of prices for goods and services rises over time, reducing the purchasing power of money. For example, if inflation is 6%, what costs ₹100 today will cost ₹106 next year. To preserve wealth, investments should ideally earn returns higher than the inflation rate.",
+      "category": "banking",
+      "tags": ["inflation", "prices", "purchasing power", "economy"]
+    },
+    {
+      "question": "What is term insurance?",
+      "answer": "Term insurance is the simplest and most affordable form of life insurance. It provides a death benefit to the nominee if the policyholder dies during the policy term. Unlike other life insurance products, term plans don't have a maturity benefit — if you survive the term, no money is returned. A ₹1 Cr cover can cost as little as ₹500-800/month for a young individual.",
+      "category": "insurance",
+      "tags": ["term insurance", "life insurance", "death benefit", "premium"]
+    },
+    {
+      "question": "What is health insurance?",
+      "answer": "Health insurance covers medical expenses arising from illness, injury, or hospitalization. It can cover hospitalization costs, pre and post-hospitalization expenses, day-care procedures, and sometimes outpatient consultations. Premiums paid for health insurance are tax-deductible under Section 80D up to ₹25,000 (₹50,000 for senior citizens).",
+      "category": "insurance",
+      "tags": ["health insurance", "medical", "hospitalization", "80d"]
+    },
+    {
+      "question": "What is the difference between fixed and floating interest rate?",
+      "answer": "Fixed interest rate remains constant throughout the loan tenure, providing predictable EMIs. Floating interest rate varies with market conditions (linked to repo rate or MCLR), meaning your EMI can increase or decrease. Floating rates are usually 1-2% lower initially but carry the risk of rate hikes. Most home loans in India are on floating rate.",
+      "category": "loans",
+      "tags": ["fixed rate", "floating rate", "interest", "comparison"]
+    },
+    {
+      "question": "What is loan amortization?",
+      "answer": "Loan amortization is the process of paying off a loan through scheduled, periodic payments that include both principal and interest. In the early years, a larger portion of EMI goes toward interest, while in later years, more goes toward principal repayment. An amortization schedule shows the breakdown for each payment.",
+      "category": "loans",
+      "tags": ["amortization", "repayment", "schedule", "principal"]
+    },
+    {
+      "question": "Can I prepay my home loan?",
+      "answer": "Yes, most banks allow home loan prepayment. For floating rate home loans, banks cannot charge any prepayment penalty (as per RBI guidelines). For fixed rate loans, a penalty of up to 2% may apply. Prepayment reduces your total interest burden significantly and is generally recommended when you have surplus funds.",
+      "category": "loans",
+      "tags": ["prepayment", "home loan", "penalty", "foreclosure"]
+    },
+    {
+      "question": "What is ELSS?",
+      "answer": "ELSS (Equity Linked Savings Scheme) is a type of mutual fund that invests primarily in equities and offers tax deduction under Section 80C. It has the shortest lock-in period (3 years) among all 80C investments. ELSS funds have the potential for higher returns compared to other tax-saving instruments like PPF or NSC.",
+      "category": "investment",
+      "tags": ["elss", "tax saving", "mutual fund", "equity"]
+    },
+    {
+      "question": "What is index fund?",
+      "answer": "An index fund is a type of mutual fund designed to replicate the performance of a specific market index (like Nifty 50 or Sensex). Index funds use passive management, which means lower expense ratios compared to actively managed funds. They provide broad market exposure and are ideal for long-term investors who prefer a simple, low-cost investment strategy.",
+      "category": "investment",
+      "tags": ["index fund", "passive", "nifty", "sensex"]
+    },
+    {
+      "question": "What are equity and debt funds?",
+      "answer": "Equity funds invest primarily in stocks and aim for capital appreciation — they carry higher risk but offer potentially higher returns. Debt funds invest in fixed-income securities like bonds and government securities — they are lower risk and provide more stable returns. A balanced approach often combines both based on your risk tolerance and goals.",
+      "category": "investment",
+      "tags": ["equity", "debt", "funds", "comparison"]
+    },
+    {
+      "question": "What is a credit card?",
+      "answer": "A credit card is a financial tool that allows you to borrow money from the issuing bank up to a set credit limit for purchases. You must repay the borrowed amount within the billing cycle (usually 20-50 days) to avoid interest charges (typically 24-42% per annum). Responsible credit card use can help build your credit score.",
+      "category": "banking",
+      "tags": ["credit card", "credit", "borrowing", "limit"]
+    },
+    {
+      "question": "What is loan moratorium?",
+      "answer": "A loan moratorium is a temporary suspension of EMI payments granted by the lender. During a moratorium, the borrower doesn't need to make payments, but interest continues to accrue on the outstanding principal. The RBI has offered moratorium periods during economic crises (like COVID-19) to provide relief to borrowers.",
+      "category": "loans",
+      "tags": ["moratorium", "suspension", "relief", "rbi"]
+    },
+    {
+      "question": "What is balance transfer in home loan?",
+      "answer": "Home loan balance transfer involves moving your existing home loan from one bank to another that offers a lower interest rate. This can significantly reduce your total interest outgo and EMI. However, consider processing fees, legal charges, and remaining tenure before making a transfer decision.",
+      "category": "loans",
+      "tags": ["balance transfer", "home loan", "refinance", "lower rate"]
+    },
+    {
+      "question": "What is gold loan?",
+      "answer": "A gold loan is a secured loan where you pledge your gold jewelry or ornaments as collateral to borrow money. Gold loans offer quick disbursement, lower interest rates (7-15%), and minimal documentation. The loan amount is typically 60-75% of the gold's market value. Your gold is returned upon full repayment.",
+      "category": "loans",
+      "tags": ["gold loan", "collateral", "secured", "jewelry"]
+    },
+    {
+      "question": "What is the repo rate?",
+      "answer": "The repo rate is the interest rate at which the Reserve Bank of India (RBI) lends money to commercial banks. When RBI increases the repo rate, borrowing becomes expensive, and loan EMIs tend to increase. Conversely, a repo rate cut leads to lower borrowing costs. The current repo rate is a key factor in determining floating-rate loan EMIs.",
+      "category": "banking",
+      "tags": ["repo rate", "rbi", "monetary policy", "interest rate"]
+    }
+  ]
+}
