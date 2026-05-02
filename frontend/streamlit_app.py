@@ -149,6 +149,17 @@ if "sessions" not in st.session_state:
     st.session_state.sessions = {}
     st.session_state.session_order = []
 
+# Global user profile — persists across all chat sessions
+# Only cleared when Personal Info toggle is turned off
+if "user_profile" not in st.session_state:
+    st.session_state.user_profile = {
+        "monthly_income": "",
+        "existing_emis": "",
+        "savings": "",
+        "financial_goals": "",
+        "risk_tolerance": "Moderate"
+    }
+
 if "active_session_id" not in st.session_state:
     new_id = str(uuid4())
     st.session_state.sessions[new_id] = {
@@ -156,13 +167,6 @@ if "active_session_id" not in st.session_state:
         "messages": [],
         "debug_data": [],
         "intent_locked": False,
-        "user_context": {
-            "monthly_income": "",
-            "existing_emis": "",
-            "savings": "",
-            "financial_goals": "",
-            "risk_tolerance": "Moderate"
-        }
     }
     st.session_state.session_order.append(new_id)
     st.session_state.active_session_id = new_id
@@ -205,13 +209,6 @@ def create_new_session():
         "messages": [],
         "debug_data": [],
         "intent_locked": False,
-        "user_context": {
-            "monthly_income": "",
-            "existing_emis": "",
-            "savings": "",
-            "financial_goals": "",
-            "risk_tolerance": "Moderate"
-        }
     }
     st.session_state.session_order.append(new_id)
     st.session_state.active_session_id = new_id
@@ -309,7 +306,7 @@ def send_message(user_input: str, use_rag: bool = False) -> dict | None:
             "use_bert": st.session_state.get("model_selector", "BERT (Advanced)") == "BERT (Advanced)",
         }
         if use_rag:
-            payload["user_context"] = active_session["user_context"]
+            payload["user_context"] = st.session_state.user_profile
             
         response = requests.post(
             f"{API_BASE_URL}/chat",
@@ -395,22 +392,22 @@ if st.session_state.current_page == "settings":
     if rag_active:
         st.caption("This profile is used for personalized financial advice. Data is ephemeral and never saved to disk.")
         temp_income = st.text_input(
-            "Monthly Income (₹)", value=active_session["user_context"]["monthly_income"]
+            "Monthly Income (₹)", value=st.session_state.user_profile["monthly_income"]
         )
         temp_emis = st.text_input(
-            "Existing Monthly EMIs (₹)", value=active_session["user_context"]["existing_emis"]
+            "Existing Monthly EMIs (₹)", value=st.session_state.user_profile["existing_emis"]
         )
         temp_savings = st.text_input(
-            "Total Savings / Investments (₹)", value=active_session["user_context"]["savings"]
+            "Total Savings / Investments (₹)", value=st.session_state.user_profile["savings"]
         )
         temp_goals = st.text_area(
-            "Financial Goals", value=active_session["user_context"]["financial_goals"],
+            "Financial Goals", value=st.session_state.user_profile["financial_goals"],
             placeholder="e.g. Buy a house in 5 years, retire early..."
         )
         temp_risk = st.selectbox(
             "Risk Tolerance",
             ["Low", "Moderate", "High"],
-            index=["Low", "Moderate", "High"].index(active_session["user_context"]["risk_tolerance"])
+            index=["Low", "Moderate", "High"].index(st.session_state.user_profile["risk_tolerance"])
         )
     else:
         st.warning("Personal Info is turned off. Enable it from the sidebar toggle to fill your profile.")
@@ -420,11 +417,11 @@ if st.session_state.current_page == "settings":
     if st.button("Save Settings", type="primary", use_container_width=True):
         st.session_state.use_gemini_toggle = temp_gemini
         if rag_active:
-            active_session["user_context"]["monthly_income"] = temp_income
-            active_session["user_context"]["existing_emis"] = temp_emis
-            active_session["user_context"]["savings"] = temp_savings
-            active_session["user_context"]["financial_goals"] = temp_goals
-            active_session["user_context"]["risk_tolerance"] = temp_risk
+            st.session_state.user_profile["monthly_income"] = temp_income
+            st.session_state.user_profile["existing_emis"] = temp_emis
+            st.session_state.user_profile["savings"] = temp_savings
+            st.session_state.user_profile["financial_goals"] = temp_goals
+            st.session_state.user_profile["risk_tolerance"] = temp_risk
         st.success("Settings saved successfully!")
 
     st.markdown("---")
@@ -450,7 +447,10 @@ else:
             
         with st.chat_message("assistant"):
             with st.spinner("Thinking..."):
-                use_rag = st.session_state.get("use_rag_toggle", False) and any(active_session["user_context"].values())
+                # Only count actual data fields, not the always-set risk_tolerance default
+                profile = st.session_state.user_profile
+                has_profile_data = any(profile.get(k, "") for k in ["monthly_income", "existing_emis", "savings", "financial_goals"])
+                use_rag = st.session_state.get("use_rag_toggle", False) and has_profile_data
                 data = send_message(user_input, use_rag=use_rag)
         
         if data and not active_session["intent_locked"] and data.get("intent"):

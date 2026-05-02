@@ -44,6 +44,14 @@ SLOT_PROMPTS = {
     "LOAN_TYPE": "What type of loan? (e.g., home loan, personal loan, car loan)",
 }
 
+# ---- Mapping from user_context profile keys to slot names ----
+# When RAG is on and slots are missing, try to fill them from the user's profile.
+USER_CONTEXT_SLOT_MAP = {
+    "monthly_income": "AMOUNT",    # Default loan amount = user's monthly income
+    "existing_emis": "EXISTING_EMI",
+    "savings": "SAVINGS",
+}
+
 
 @dataclass
 class ConversationState:
@@ -84,7 +92,8 @@ class ConversationManager:
         session_id: str,
         user_message: str,
         intent: dict,
-        entities: list[dict]
+        entities: list[dict],
+        user_context: dict = None,
     ) -> dict:
         """
         Process one turn of conversation.
@@ -223,6 +232,9 @@ class ConversationManager:
                 else:
                     session.collected_entities[slot_needed] = user_message.strip()
 
+            # Auto-fill from user profile (RAG) before re-checking
+            self._prefill_from_context(session, user_context)
+
             # Recalculate missing slots
             session.missing_slots = [
                 s for s in session.required_slots
@@ -296,6 +308,9 @@ class ConversationManager:
             self._reset_session(session)
             return result
 
+        # Auto-fill from user profile (RAG) before checking for missing slots
+        self._prefill_from_context(session, user_context)
+
         # Check for missing slots
         missing = [s for s in required if s not in session.collected_entities]
         session.missing_slots = missing
@@ -317,6 +332,32 @@ class ConversationManager:
             }
             self._reset_session(session)
             return result
+
+    def _prefill_from_context(self, session: ConversationState, user_context: dict = None):
+        """
+        Auto-fill missing required slots from the user's RAG profile.
+        Only fills slots that are still missing — never overwrites
+        values the user explicitly provided in their message.
+        """
+        if not user_context:
+            return
+
+        still_missing = [
+            s for s in session.required_slots
+            if s not in session.collected_entities
+        ]
+
+        for slot in still_missing:
+            if slot == "AMOUNT":
+                # Use monthly_income as default loan/investment amount
+                income = user_context.get("monthly_income", "").strip()
+                if income:
+                    session.collected_entities["AMOUNT"] = income
+                    print(f"[RAG] Auto-filled AMOUNT = {income} from monthly_income")
+            elif slot == "CURRENCY":
+                # Indian users filling ₹ fields → default to INR
+                session.collected_entities["CURRENCY"] = "INR"
+                print(f"[RAG] Auto-filled CURRENCY = INR (default for profile)")
 
     def _reset_session(self, session: ConversationState):
         """Reset session state after completing a turn (keep history)."""

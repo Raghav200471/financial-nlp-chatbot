@@ -60,6 +60,7 @@ async def chat(request: ChatRequest):
             user_message=user_message,
             intent=intent_result,
             entities=entities_list,
+            user_context=request.user_context,
         )
 
         # Step 4: Generate response based on action

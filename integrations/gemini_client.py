@@ -125,7 +125,9 @@ def ask_gemini(user_message: str, context: str = "", use_gemini: bool = True, us
         )
 
     # Check cache first (avoids API call entirely for repeated questions)
-    cache_k = _cache_key(user_message + context)
+    # Include user_context in key so RAG vs non-RAG queries don't collide
+    context_str = str(user_context) if user_context else ""
+    cache_k = _cache_key(user_message + context + context_str)
     cached = _cache_get(cache_k)
     if cached:
         print(f"[Gemini] Cache HIT for: {user_message[:50]}...")
