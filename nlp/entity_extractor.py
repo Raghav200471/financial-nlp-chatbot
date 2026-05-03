@@ -94,9 +94,19 @@ class EntityExtractor:
         # 2. Rule-based fallback for entities that the model might miss
         rule_entities = self._extract_by_rules(text)
 
-        # Merge: add rule-based entities only if they don't overlap with model entities
+        # Merge: add rule-based entities, overriding ML entities if the rule is a TICKER
         for rule_ent in rule_entities:
-            if not self._overlaps(rule_ent, entities):
+            overlap = False
+            for ml_ent in entities[:]:
+                if (rule_ent["start"] < ml_ent["end"] and rule_ent["end"] > ml_ent["start"]):
+                    overlap = True
+                    # If rule-based found a highly-confident TICKER, override the ML hallucination
+                    if rule_ent["entity"] == "TICKER":
+                        entities.remove(ml_ent)
+                        entities.append(rule_ent)
+                    break
+            
+            if not overlap:
                 entities.append(rule_ent)
 
         # 3. Post-filter: remove AMOUNT entities that are standalone year numbers
