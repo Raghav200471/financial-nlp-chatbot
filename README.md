@@ -57,8 +57,16 @@ copy .env.example .env
 ```
 
 ### 3. Train Models
+Run the following scripts to train the machine learning models locally. 
+
 ```bash
+# Train the fast baseline intent classifier (TF-IDF + Logistic Regression)
 python models/intent_classifier/baseline/train_baseline.py
+
+# Train the advanced BERT intent classifier (Downloads HuggingFace weights, may take a few minutes)
+python models/intent_classifier/bert/train_bert.py
+
+# Train the custom SpaCy Named Entity Recognition model
 python models/ner/train_ner.py
 ```
 
