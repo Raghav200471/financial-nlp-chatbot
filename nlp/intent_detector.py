@@ -126,7 +126,8 @@ class IntentDetector:
 
     def _predict_bert(self, text: str) -> dict:
         """Predict using fine-tuned BERT."""
-        results = self.bert_classifier(text)
+        # Truncate text to avoid crashing on long "nonsense" inputs (max 512 tokens)
+        results = self.bert_classifier(text, truncation=True, max_length=512)
         
         # HuggingFace pipeline with top_k=None returns list of dicts
         if isinstance(results[0], list):
