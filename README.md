@@ -23,21 +23,29 @@ User → Streamlit UI → FastAPI Backend → NLP Pipeline → Query Router
 - 🏷️ **Named Entity Recognition** with custom SpaCy model
 - 🔄 **Multi-turn conversations** with slot-filling dialogue
 - 🧠 **Gemini API fallback** for complex/open-ended queries
+- 👤 **Local RAG Profile** (Auto-fills missing details like EMI or loan amounts based on your saved financial profile)
 
 ## Quick Start
 
 ### 1. Setup
 ```bash
-# Clone the repo
-git clone <repo-url>
-cd financialchatbot
+# Clone the repository
+git clone https://github.com/Raghav200471/financial-nlp-chatbot.git
+cd financial-nlp-chatbot
 
-# Create virtual environment
+# Create a virtual environment
 python -m venv venv
-venv\Scripts\activate  # Windows
 
-# Install dependencies
+# Activate the virtual environment
+# On Windows:
+venv\Scripts\activate
+# On macOS/Linux:
+# source venv/bin/activate
+
+# Install all required dependencies
 pip install -r requirements.txt
+
+# Download the SpaCy language model (Required for Named Entity Recognition)
 python -m spacy download en_core_web_sm
 ```
 
@@ -54,14 +62,19 @@ python models/intent_classifier/baseline/train_baseline.py
 python models/ner/train_ner.py
 ```
 
-### 4. Run
-```bash
-# Terminal 1: Start backend
-uvicorn api.main:app --reload --port 8000
+### 4. Run the Application
+Open **two separate terminals** (make sure your virtual environment is activated in both).
 
-# Terminal 2: Start frontend
-streamlit run frontend/streamlit_app.py
+```bash
+# Terminal 1: Start the FastAPI Backend Server
+python -m uvicorn api.main:app --reload --port 8000
 ```
+
+```bash
+# Terminal 2: Start the Streamlit Frontend UI
+python -m streamlit run frontend/streamlit_app.py
+```
+After starting the frontend, your browser will automatically open the chat interface at `http://localhost:8501`.
 
 ## Project Structure
 
