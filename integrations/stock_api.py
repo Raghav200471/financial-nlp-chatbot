@@ -59,7 +59,12 @@ def get_stock_price(ticker: str) -> dict:
         if result["success"]:
             return result
 
-    # Strategy 3: Local CSV fallback (always available, offline data)
+    # Strategy 3: Yahoo Finance (Free, no key required, supports Indian tickers)
+    result = _fetch_yahoo(ticker)
+    if result["success"]:
+        return result
+
+    # Strategy 4: Local CSV fallback (always available, offline data)
     result = _fetch_csv(ticker)
     if result["success"]:
         return result
@@ -182,7 +187,62 @@ def _fetch_fmp(ticker: str) -> dict:
         return {"success": False, "error": f"FMP error: {str(e)}", "ticker": ticker}
 
 
-# ---- Strategy 3: Local CSV Fallback ----
+# ---- Strategy 3: Yahoo Finance ----
+def _fetch_yahoo(ticker: str) -> dict:
+    """
+    Fetch from Yahoo Finance chart API.
+    Does not require an API key and supports international tickers (e.g. RELIANCE.NS).
+    Requires a valid User-Agent header to avoid blocking.
+    """
+    try:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}"
+        # Yahoo blocks default python-requests user agents
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+        }
+        resp = requests.get(url, headers=headers, timeout=10, verify=True)
+        resp.raise_for_status()
+        data = resp.json()
+
+        result = data.get('chart', {}).get('result', [])
+        if not result:
+            return {"success": False, "error": "No data from Yahoo", "ticker": ticker}
+
+        meta = result[0].get('meta', {})
+        price = meta.get('regularMarketPrice')
+
+        if not price:
+            return {"success": False, "error": "No price from Yahoo", "ticker": ticker}
+
+        # Try to get day high/low and volume from indicators
+        indicators = result[0].get('indicators', {}).get('quote', [{}])[0]
+        highs = indicators.get('high', [])
+        lows = indicators.get('low', [])
+        volumes = indicators.get('volume', [])
+
+        day_high = max([h for h in highs if h is not None], default="N/A") if highs else "N/A"
+        day_low = min([l for l in lows if l is not None], default="N/A") if lows else "N/A"
+        vol = volumes[-1] if volumes and volumes[-1] is not None else "N/A"
+        
+        if vol != "N/A":
+            vol = f"{int(vol):,}"
+
+        return {
+            "ticker": ticker,
+            "company": ticker,
+            "current_price": round(float(price), 2),
+            "day_high": round(float(day_high), 2) if day_high != "N/A" else "N/A",
+            "day_low": round(float(day_low), 2) if day_low != "N/A" else "N/A",
+            "volume": vol,
+            "source": "Yahoo Finance (Live)",
+            "success": True
+        }
+
+    except Exception as e:
+        return {"success": False, "error": f"Yahoo error: {str(e)}", "ticker": ticker}
+
+
+# ---- Strategy 4: Local CSV Fallback ----
 def _fetch_csv(ticker: str) -> dict:
     """
     Look up stock data from the local CSV file (data/stock_data.csv).

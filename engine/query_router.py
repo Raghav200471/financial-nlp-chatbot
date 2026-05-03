@@ -244,13 +244,18 @@ class QueryRouter:
 
             if income and income > 0:
                 # Standard banking rule: max EMI = 50% of (income - existing EMIs)
-                disposable = income - (existing_emis or 0)
-                max_emi = disposable * 0.5
-                # Rough max loan estimate: max_emi * 12 * 20 years at ~8.5%
-                # Using simplified formula: max_loan ≈ max_emi * 12 * tenure_factor
-                # For 20yr @ 8.5%: factor ≈ 10.5
-                max_loan = max_emi * 12 * 10.5 if max_emi > 0 else 0
-
+                disposable = max(0, income - existing_emis)
+                
+                if disposable == 0:
+                    max_emi = 0
+                    max_loan = 0
+                else:
+                    max_emi = disposable * 0.5
+                    # Rough max loan estimate: max_emi * 12 * 20 years at ~8.5%
+                    # Using simplified formula: max_loan ≈ max_emi * 12 * tenure_factor
+                    # For 20yr @ 8.5%: factor ≈ 10.5
+                    max_loan = max_emi * 12 * 10.5
+                
                 currency = "₹"
                 lines = [
                     f"**Personalized Loan Eligibility Assessment**",
@@ -266,10 +271,14 @@ class QueryRouter:
                 lines.append(f"- **Max Affordable EMI (50% rule):** {currency}{max_emi:,.0f}/month")
                 lines.append(f"- **Estimated Max Loan (20yr @ ~8.5%):** {currency}{max_loan:,.0f}")
                 lines.append(f"")
-                if max_emi > 5000:
+                
+                if disposable == 0:
+                    lines.append(f"❌ **Declined:** Your existing EMIs exceed or match your monthly income. You are not eligible for a new loan at this time.")
+                elif max_emi > 5000:
                     lines.append(f"✅ You appear to have good loan eligibility.")
                 else:
                     lines.append(f"⚠️ Your current disposable income may limit loan options. Consider reducing existing EMIs first.")
+                
                 lines.append(f"")
                 lines.append(f"*Note: Actual eligibility depends on credit score, employment type, and lender policies. Consult a financial advisor.*")
                 return "\n".join(lines)
