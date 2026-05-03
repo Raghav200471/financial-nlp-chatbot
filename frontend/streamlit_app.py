@@ -311,7 +311,7 @@ def send_message(user_input: str, use_rag: bool = False) -> dict | None:
         response = requests.post(
             f"{API_BASE_URL}/chat",
             json=payload,
-            timeout=30,
+            timeout=120,
         )
         response.raise_for_status()
         return response.json()

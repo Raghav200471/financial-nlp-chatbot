@@ -74,6 +74,11 @@ class IntentDetector:
             )
 
         from transformers import pipeline
+        import transformers
+        
+        # Disable tqdm progress bars to prevent OSError: [Errno 22] on Windows Streamlit/FastAPI stderr
+        transformers.utils.logging.disable_progress_bar()
+        
         self.bert_classifier = pipeline(
             "text-classification",
             model=model_path,
