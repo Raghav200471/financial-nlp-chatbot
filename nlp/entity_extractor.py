@@ -114,6 +114,8 @@ class EntityExtractor:
             "reliance": "RELIANCE.NS", "tcs": "TCS.NS", "infosys": "INFY.NS",
             "hdfc": "HDFCBANK.NS", "icici": "ICICIBANK.NS", "wipro": "WIPRO.NS",
             "sbi": "SBIN.NS", "tata motors": "TATAMOTORS.NS", "itc": "ITC.NS",
+            "tata steel": "TATASTEEL.NS", "adani": "ADANIENT.NS", 
+            "zomato": "ZOMATO.NS", "paytm": "PAYTM.NS", "jio": "JIOFIN.NS",
             "uber": "UBER", "adobe": "ADBE", "salesforce": "CRM",
         }
         for e in entities:
@@ -159,6 +161,8 @@ class EntityExtractor:
             "reliance": "RELIANCE.NS", "tcs": "TCS.NS", "infosys": "INFY.NS",
             "hdfc": "HDFCBANK.NS", "icici": "ICICIBANK.NS", "wipro": "WIPRO.NS",
             "sbi": "SBIN.NS", "tata motors": "TATAMOTORS.NS", "itc": "ITC.NS",
+            "tata steel": "TATASTEEL.NS", "adani": "ADANIENT.NS", 
+            "zomato": "ZOMATO.NS", "paytm": "PAYTM.NS", "jio": "JIOFIN.NS",
             "uber": "UBER", "adobe": "ADBE", "salesforce": "CRM",
         }
         known_tickers_lower = {t.lower(): t for t in KNOWN_TICKERS}

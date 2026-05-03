@@ -42,6 +42,10 @@ async def chat(request: ChatRequest):
         # Step 1: Detect intent
         cleaned = clean_text(user_message)
         intent_result = intent_detector.predict(cleaned, use_bert=request.use_bert)
+        
+        from config import settings
+        if intent_result["confidence"] < settings.INTENT_CONFIDENCE_THRESHOLD:
+            intent_result["intent"] = "unknown"
 
         # Step 2: Extract entities (use original text to preserve case for tickers)
         entities_list = entity_extractor.extract(user_message)
