@@ -58,6 +58,26 @@ async def chat(request: ChatRequest):
         elif intent_result["intent"] == "get_stock_price" and "TICKER" not in extracted_labels and ("CURRENCY" in extracted_labels or "CURRENCY_TO" in extracted_labels):
             intent_result["intent"] = "get_exchange_rate"
 
+        # Step 2.6: OOD (Out-Of-Domain) / Hallucination Rejection
+        # Neural networks (BERT) can be overconfident on completely unrelated queries (e.g. "temperature of hyderabad").
+        # If the intent is an action, it MUST have either extracted entities OR basic domain keywords.
+        words = set(cleaned.split())
+        
+        if intent_result["intent"] == "get_stock_price":
+            stock_keywords = {"stock", "price", "share", "market", "cost", "ticker", "quote", "trade", "value"}
+            if "TICKER" not in extracted_labels and not words.intersection(stock_keywords):
+                intent_result["intent"] = "unknown"
+                
+        elif intent_result["intent"] == "get_exchange_rate":
+            currency_keywords = {"currency", "exchange", "rate", "convert", "usd", "inr", "euro", "forex"}
+            if "CURRENCY" not in extracted_labels and "CURRENCY_TO" not in extracted_labels and not words.intersection(currency_keywords):
+                intent_result["intent"] = "unknown"
+                
+        elif intent_result["intent"] in ("calculate_emi", "calculate_interest"):
+            loan_keywords = {"loan", "emi", "interest", "rate", "principal", "borrow", "mortgage", "calculate", "math"}
+            if not extracted_labels and not words.intersection(loan_keywords):
+                intent_result["intent"] = "unknown"
+
         # Step 3: Conversation manager (handles multi-turn slot filling)
         turn_result = conversation_manager.process_turn(
             session_id=session_id,
