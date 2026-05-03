@@ -123,7 +123,7 @@ def train_ner_model(training_data: list[tuple], output_dir: str, n_iter: int = 4
     # Save model
     os.makedirs(output_dir, exist_ok=True)
     nlp.to_disk(output_dir)
-    print(f"\n✅ NER model saved to: {output_dir}")
+    print(f"\n[OK] NER model saved to: {output_dir}")
     
     return nlp
 
