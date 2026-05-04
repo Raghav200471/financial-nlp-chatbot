@@ -16,6 +16,7 @@ class Settings:
 
     # --- API Keys ---
     GEMINI_API_KEY: str = os.getenv("GEMINI_API_KEY", "")
+    GROQ_API_KEY: str = os.getenv("GROQ_API_KEY", "")
     FMP_API_KEY: str = os.getenv("FMP_API_KEY", "")
 
     # --- Model Paths ---
