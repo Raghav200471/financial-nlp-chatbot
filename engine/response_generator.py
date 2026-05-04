@@ -11,9 +11,9 @@ Gemini summarization support is available when USE_GEMINI is enabled.
 RESPONSE_TEMPLATES = {
     "stock_price": (
         "**{company} ({ticker})**\n"
-        "* Current Price: ${current_price}\n"
-        "* Day High: ${day_high}\n"
-        "* Day Low: ${day_low}\n"
+        "* Current Price: {currency_symbol}{current_price}\n"
+        "* Day High: {currency_symbol}{day_high}\n"
+        "* Day Low: {currency_symbol}{day_low}\n"
         "* Volume: {volume}\n"
         "_Source: {source}_"
     ),

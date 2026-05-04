@@ -158,6 +158,12 @@ class QueryRouter:
         data = get_stock_price(ticker)
 
         if data.get("success"):
+            # Determine currency symbol based on exchange suffix
+            upper_ticker = ticker.upper()
+            if upper_ticker.endswith(".NS") or upper_ticker.endswith(".BO"):
+                data["currency_symbol"] = "₹"
+            else:
+                data["currency_symbol"] = "$"
             return generate_response("stock_price", data)
         else:
             return generate_response("stock_price_error", {
