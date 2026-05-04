@@ -36,8 +36,11 @@ def update_csv():
         # If the API succeeds AND the source is NOT the local CSV fallback, update the row
         if data.get("success") and not data.get("source", "").startswith("Local CSV"):
             df.at[index, 'current_price'] = data['current_price']
-            df.at[index, 'day_high'] = data['day_high']
-            df.at[index, 'day_low'] = data['day_low']
+            
+            if data['day_high'] != "N/A":
+                df.at[index, 'day_high'] = data['day_high']
+            if data['day_low'] != "N/A":
+                df.at[index, 'day_low'] = data['day_low']
             
             vol = data['volume']
             if isinstance(vol, str):
