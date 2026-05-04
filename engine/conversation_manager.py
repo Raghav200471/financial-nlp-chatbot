@@ -20,8 +20,8 @@ from typing import Optional
 
 # ---- Slot definitions per intent ----
 REQUIRED_SLOTS = {
-    "calculate_emi": ["AMOUNT", "RATE", "DURATION", "CURRENCY"],
-    "calculate_interest": ["AMOUNT", "RATE", "DURATION", "CURRENCY"],
+    "calculate_emi": ["AMOUNT", "RATE", "DURATION"],
+    "calculate_interest": ["AMOUNT", "RATE", "DURATION"],
     "get_stock_price": ["TICKER"],
     "get_exchange_rate": ["CURRENCY"],
     "loan_eligibility": ["AMOUNT"],
@@ -30,7 +30,8 @@ REQUIRED_SLOTS = {
 # ---- Optional slots (collected if present, not prompted for) ----
 OPTIONAL_SLOTS = {
     "loan_eligibility": ["DURATION", "LOAN_TYPE"],
-    "calculate_emi": [],
+    "calculate_emi": ["CURRENCY"],
+    "calculate_interest": ["CURRENCY"],
 }
 
 # ---- Human-friendly prompts for each missing slot ----

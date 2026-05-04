@@ -185,14 +185,24 @@ def persist_session_to_disk(session_id: str, session_data: dict):
         else:
             history = []
         
-        history.append({
+        # Update existing session entry instead of appending duplicates
+        entry = {
             "session_id": session_id,
             "title": session_data.get("title", "Unknown"),
             "timestamp": datetime.now().isoformat(),
             "messages": session_data.get("messages", [])
-        })
+        }
+        # Find and replace existing entry for this session_id
+        found = False
+        for i, item in enumerate(history):
+            if item.get("session_id") == session_id:
+                history[i] = entry
+                found = True
+                break
+        if not found:
+            history.append(entry)
         
-        # Keep last 100 on disk to avoid bloated files
+        # Keep last 100 sessions on disk to avoid bloated files
         if len(history) > 100:
             history = history[-100:]
             
@@ -441,7 +451,12 @@ else:
         active_session["messages"].append({"role": "user", "content": user_input})
         active_session["debug_data"].append(None)
 
-        # Get bot response
+        # Display existing chat history FIRST (for multi-turn conversations)
+        for idx, msg in enumerate(active_session["messages"][:-1]):
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+
+        # Show the new user message
         with st.chat_message("user"):
             st.markdown(user_input)
             
@@ -475,7 +490,7 @@ else:
         st.rerun()
 
     # ---- Welcome screen (empty chat) ----
-    if not active_session["messages"] and not st.session_state.get("is_processing", False):
+    elif not active_session["messages"]:
         st.markdown(
             """
             <div class="welcome-container">
