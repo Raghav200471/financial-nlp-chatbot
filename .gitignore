@@ -39,8 +39,9 @@ data/spacy_training/*.spacy
 Thumbs.db
 desktop.ini
 
-# --- Logs ---
+# --- Logs & User Data ---
 *.log
+data/chat_history_log.json
 
 # --- Jupyter ---
 .ipynb_checkpoints/
