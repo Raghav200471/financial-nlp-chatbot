@@ -465,12 +465,17 @@ else:
                 "entities": data.get("entities", []),
             })
 
+        # Persist session to disk after every bot response
+        persist_session_to_disk(
+            st.session_state.active_session_id, active_session
+        )
+
         # Unlock the UI
         st.session_state.is_processing = False
         st.rerun()
 
     # ---- Welcome screen (empty chat) ----
-    if not active_session["messages"]:
+    if not active_session["messages"] and not st.session_state.get("is_processing", False):
         st.markdown(
             """
             <div class="welcome-container">
