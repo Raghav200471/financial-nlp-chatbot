@@ -474,8 +474,8 @@ else:
         st.session_state.is_processing = False
         st.rerun()
 
-    # ---- Welcome screen (empty chat) ----
-    elif not active_session["messages"]:
+    # ---- Welcome screen (empty chat, NOT processing) ----
+    elif not active_session["messages"] and not st.session_state.get("is_processing", False):
         st.markdown(
             """
             <div class="welcome-container">
@@ -486,7 +486,7 @@ else:
             unsafe_allow_html=True,
         )
 
-        # Suggestion bubbles
+        # Suggestion bubbles — only render when completely idle
         examples = [
             "What is the price of Apple?",
             "Calculate EMI for 10 lakh at 8.5%",
@@ -503,7 +503,7 @@ else:
         cols1 = st.columns(len(row1))
         for i, ex in enumerate(row1):
             with cols1[i]:
-                if st.button(ex, key=f"sug_{i}", use_container_width=True, disabled=st.session_state.get("is_processing", False)):
+                if st.button(ex, key=f"sug_{i}", use_container_width=True):
                     st.session_state.pending_query = ex
                     st.session_state.is_processing = True
                     st.rerun()
@@ -511,7 +511,7 @@ else:
         cols2 = st.columns(len(row2))
         for i, ex in enumerate(row2):
             with cols2[i]:
-                if st.button(ex, key=f"sug_{i+3}", use_container_width=True, disabled=st.session_state.get("is_processing", False)):
+                if st.button(ex, key=f"sug_{i+3}", use_container_width=True):
                     st.session_state.pending_query = ex
                     st.session_state.is_processing = True
                     st.rerun()
