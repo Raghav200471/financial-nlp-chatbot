@@ -21,225 +21,99 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ---- Theme State ----
-if "theme_mode" not in st.session_state:
-    st.session_state.theme_mode = "dark"
-
-is_light = st.session_state.theme_mode == "light"
-
-# ---- Custom CSS (dynamic theme) ----
-if is_light:
-    _css_vars = """
-        :root {
-            --bg-primary: #ffffff;
-            --bg-secondary: #f1f3f4;
-            --text-primary: #202124;
-            --text-secondary: #5f6368;
-            --text-muted: #80868b;
-            --accent: #1a73e8;
-            --accent-light: rgba(26,115,232,0.08);
-            --border: rgba(0,0,0,0.08);
-            --bubble-text: #333333;
-            --bubble-border: rgba(0,0,0,0.15);
-            --bubble-hover-bg: rgba(26,115,232,0.06);
-            --bubble-hover-border: rgba(26,115,232,0.4);
-            --bubble-hover-text: #1a73e8;
-            --welcome-greeting: #1a73e8;
-            --welcome-tagline: #202124;
-            --brand-color: #1a73e8;
-            --sidebar-footer: #999;
-            --divider: rgba(0,0,0,0.06);
-        }
-    """
-    _light_overrides = """
-        /* Force light backgrounds on Streamlit elements */
-        .stApp, .main, section[data-testid="stMain"] {
-            background-color: #ffffff !important;
-            color: #202124 !important;
-        }
-        section[data-testid="stSidebar"] > div:first-child {
-            background-color: #f8f9fa !important;
-        }
-        .stChatMessage { background-color: #f1f3f4 !important; }
-        .stChatMessage p, .stChatMessage li, .stChatMessage strong,
-        .stMarkdown p, .stMarkdown li, .stMarkdown strong, .stMarkdown h1,
-        .stMarkdown h2, .stMarkdown h3, .stMarkdown em {
-            color: #202124 !important;
-        }
-        div[data-testid="stChatInput"] textarea {
-            background-color: #f1f3f4 !important;
-            color: #202124 !important;
-            border-color: rgba(0,0,0,0.12) !important;
-        }
-        .stRadio label, .stToggle label, .stSelectbox label,
-        .stTextInput label, .stTextArea label {
-            color: #202124 !important;
-        }
-        .stRadio label span { color: #202124 !important; }
-        /* Sidebar text */
-        section[data-testid="stSidebar"] p,
-        section[data-testid="stSidebar"] label,
-        section[data-testid="stSidebar"] span,
-        section[data-testid="stSidebar"] div {
-            color: #202124 !important;
-        }
-        /* Popover/Expander text */
-        details summary span, details div p, details div span {
-            color: #202124 !important;
-        }
-        code { color: #1a73e8 !important; background: rgba(26,115,232,0.08) !important; }
-    """
-else:
-    _css_vars = """
-        :root {
-            --bg-primary: #1e1e20;
-            --bg-secondary: #28292d;
-            --text-primary: #e8eaed;
-            --text-secondary: #bdc1c6;
-            --text-muted: #9aa0a6;
-            --accent: #8ab4f8;
-            --accent-light: rgba(138,180,248,0.08);
-            --border: rgba(255,255,255,0.08);
-            --bubble-text: #c9d1d9;
-            --bubble-border: rgba(138,180,248,0.25);
-            --bubble-hover-bg: rgba(138,180,248,0.08);
-            --bubble-hover-border: rgba(138,180,248,0.5);
-            --bubble-hover-text: #8ab4f8;
-            --welcome-greeting: #a8c7fa;
-            --welcome-tagline: #e8eaed;
-            --brand-color: #8ab4f8;
-            --sidebar-footer: #666;
-            --divider: rgba(255,255,255,0.06);
-        }
-    """
-    _light_overrides = ""
-
-st.markdown(f"""
+# ---- Custom CSS (dark theme with bright text) ----
+st.markdown("""
 <style>
-    {_css_vars}
-
     /* ---- Global ---- */
-    .block-container {{ max-width: 850px; margin: 0 auto; padding-top: 2rem; }}
+    .block-container { max-width: 850px; margin: 0 auto; padding-top: 2rem; }
 
     /* ---- Sidebar ---- */
-    section[data-testid="stSidebar"] > div:first-child {{
+    section[data-testid="stSidebar"] > div:first-child {
         padding-top: 1.5rem;
         padding-left: 1rem;
         padding-right: 1rem;
-    }}
+    }
 
     /* ---- Chat messages ---- */
-    .stChatMessage {{ border-radius: 18px !important; }}
-    .stChatMessage p {{ font-size: 1.05rem; line-height: 1.6; }}
-    div[data-testid="stChatInput"] textarea {{
+    .stChatMessage { border-radius: 18px !important; }
+    .stChatMessage p { font-size: 1.05rem; line-height: 1.6; }
+    div[data-testid="stChatInput"] textarea {
         font-size: 1.1rem; padding: 1.2rem; border-radius: 24px !important;
-    }}
-    div[data-testid="stChatInput"] {{
+    }
+    div[data-testid="stChatInput"] {
         padding-bottom: 1.5rem;
-    }}
-    div[data-testid="stChatInput"] > div {{
+    }
+    div[data-testid="stChatInput"] > div {
         border-radius: 24px !important;
-    }}
+    }
 
     /* ---- All buttons: rounded, subtle colors ---- */
-    .stButton > button {{
+    .stButton > button {
         border-radius: 22px !important;
         padding: 0.45rem 1.1rem;
         font-size: 0.88rem;
         transition: all 0.15s ease;
-    }}
-    .stButton > button:hover {{
+    }
+    .stButton > button:hover {
         transform: translateY(-1px);
-    }}
+    }
     /* Suggestion & secondary buttons — bright readable text */
     .stButton > button[kind="secondary"],
-    .stButton > button[data-testid="stBaseButton-secondary"] {{
+    .stButton > button[data-testid="stBaseButton-secondary"] {
         background-color: transparent !important;
-        border: 1px solid var(--bubble-border) !important;
-        color: var(--bubble-text) !important;
-    }}
+        border: 1px solid rgba(138,180,248,0.25) !important;
+        color: #c9d1d9 !important;
+    }
     .stButton > button[kind="secondary"]:hover,
-    .stButton > button[data-testid="stBaseButton-secondary"]:hover {{
-        background-color: var(--bubble-hover-bg) !important;
-        border-color: var(--bubble-hover-border) !important;
-        color: var(--bubble-hover-text) !important;
-    }}
+    .stButton > button[data-testid="stBaseButton-secondary"]:hover {
+        background-color: rgba(138,180,248,0.08) !important;
+        border-color: rgba(138,180,248,0.5) !important;
+        color: #8ab4f8 !important;
+    }
 
     /* ---- Radio buttons: subtle ---- */
-    .stRadio > div {{ gap: 0.3rem; }}
-    .stRadio label {{ font-size: 0.88rem !important; }}
+    .stRadio > div { gap: 0.3rem; }
+    .stRadio label { font-size: 0.88rem !important; }
 
     /* ---- Inputs: rounded ---- */
-    .stTextInput > div > div {{ border-radius: 14px !important; }}
-    .stTextArea > div > div {{ border-radius: 14px !important; }}
-    .stSelectbox > div > div {{ border-radius: 14px !important; }}
-    div[data-baseweb="select"] > div {{ border-radius: 14px !important; }}
+    .stTextInput > div > div { border-radius: 14px !important; }
+    .stTextArea > div > div { border-radius: 14px !important; }
+    .stSelectbox > div > div { border-radius: 14px !important; }
+    div[data-baseweb="select"] > div { border-radius: 14px !important; }
 
     /* ---- Alert boxes: rounded ---- */
-    .stAlert {{ border-radius: 14px !important; }}
+    .stAlert { border-radius: 14px !important; }
 
     /* ---- Welcome screen ---- */
-    .welcome-container {{
+    .welcome-container {
         display: flex; flex-direction: column; align-items: center;
         justify-content: center; min-height: 50vh; text-align: center;
-    }}
-    .welcome-greeting {{
-        font-size: 1.8rem; font-weight: 300; color: var(--welcome-greeting);
+    }
+    .welcome-greeting {
+        font-size: 1.8rem; font-weight: 300; color: #a8c7fa;
         margin-bottom: 0.3rem;
-    }}
-    .welcome-tagline {{
-        font-size: 2.1rem; font-weight: 500; color: var(--welcome-tagline);
+    }
+    .welcome-tagline {
+        font-size: 2.1rem; font-weight: 500; color: #e8eaed;
         margin-bottom: 2.5rem;
-    }}
+    }
 
     /* ---- Brand header ---- */
-    .brand-header {{
-        font-size: 1.05rem; font-weight: 600; color: var(--brand-color);
+    .brand-header {
+        font-size: 1.05rem; font-weight: 600; color: #8ab4f8;
         letter-spacing: 0.3px; padding: 0.3rem 0 0.8rem 0;
-    }}
+    }
 
     /* ---- Sidebar footer ---- */
-    .sidebar-footer {{
-        font-size: 0.75rem; color: var(--sidebar-footer); padding-top: 1rem;
-        border-top: 1px solid var(--divider);
+    .sidebar-footer {
+        font-size: 0.75rem; color: #666; padding-top: 1rem;
+        border-top: 1px solid rgba(255,255,255,0.06);
         margin-top: 1rem;
-    }}
+    }
 
     /* ---- Popover / Expander: rounded ---- */
-    details {{ border-radius: 14px !important; }}
-    div[data-testid="stExpander"] {{ border-radius: 14px !important; }}
-
-    /* ---- Theme toggle button ---- */
-    .theme-toggle-container {{
-        position: fixed;
-        top: 14px;
-        right: 80px;
-        z-index: 999999;
-    }}
-    .theme-toggle-btn {{
-        background: var(--bg-secondary);
-        border: 1px solid var(--border);
-        border-radius: 50%;
-        width: 38px;
-        height: 38px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }}
-    .theme-toggle-btn:hover {{
-        transform: scale(1.1);
-        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    }}
-    .theme-toggle-btn svg {{
-        width: 18px;
-        height: 18px;
-        fill: var(--text-secondary);
-    }}
-
-    {_light_overrides}
+    details { border-radius: 14px !important; }
+    div[data-testid="stExpander"] { border-radius: 14px !important; }
 
 </style>
 """, unsafe_allow_html=True)
@@ -455,44 +329,7 @@ def send_message(user_input: str, use_rag: bool = False) -> dict | None:
         }
 
 
-# ============================================================
-# THEME TOGGLE — Top right of main area
-# ============================================================
-# SVG icons for sun and moon (clean, no emoji)
-_sun_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>'
-_moon_svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>'
 
-_toggle_cols = st.columns([0.88, 0.12])
-with _toggle_cols[1]:
-    _current_icon = _sun_svg if is_light else _moon_svg
-    _label = "Dark" if is_light else "Light"
-    if st.button(f"{'☀' if is_light else '🌙'}", key="theme_toggle_btn", help=f"Switch to {_label} mode"):
-        st.session_state.theme_mode = "light" if st.session_state.theme_mode == "dark" else "dark"
-        st.rerun()
-
-# Hide the emoji in the button and replace with SVG icon
-_icon_html = _sun_svg if is_light else _moon_svg
-st.markdown(f"""
-<style>
-    /* Style the theme toggle button */
-    button[data-testid="stBaseButton-secondary"][aria-label="Switch to {_label} mode"] {{
-        border-radius: 50% !important;
-        width: 40px !important;
-        height: 40px !important;
-        min-width: 40px !important;
-        padding: 8px !important;
-        border: 1px solid var(--border) !important;
-        background: var(--bg-secondary) !important;
-        color: var(--text-secondary) !important;
-        font-size: 1.1rem !important;
-    }}
-    button[data-testid="stBaseButton-secondary"][aria-label="Switch to {_label} mode"]:hover {{
-        transform: scale(1.1) !important;
-        background: var(--bubble-hover-bg) !important;
-        color: var(--bubble-hover-text) !important;
-    }}
-</style>
-""", unsafe_allow_html=True)
 
 
 # ============================================================
