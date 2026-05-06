@@ -115,8 +115,27 @@ st.markdown("""
     details { border-radius: 14px !important; }
     div[data-testid="stExpander"] { border-radius: 14px !important; }
 
+    /* ---- Suggestion bubble container (hidden during processing) ---- */
+    .suggestion-hidden { display: none !important; }
+
 </style>
 """, unsafe_allow_html=True)
+
+# ---- Inject JS to hide suggestions during processing ----
+if st.session_state.get("is_processing", False):
+    st.markdown("""
+    <script>
+        // Hide suggestion bubbles immediately when processing
+        const observer = new MutationObserver(() => {
+            const el = document.getElementById('suggestion-bubbles');
+            if (el) { el.style.display = 'none'; observer.disconnect(); }
+        });
+        observer.observe(document.body, {childList: true, subtree: true});
+        // Also try immediately
+        const el = document.getElementById('suggestion-bubbles');
+        if (el) el.style.display = 'none';
+    </script>
+    """, unsafe_allow_html=True)
 
 # ---- API & Configuration ----
 API_BASE_URL = "http://127.0.0.1:8000/api"
@@ -427,10 +446,16 @@ if st.session_state.current_page == "settings":
 # PAGE: CHAT
 # ============================================================
 else:
+    # Create a placeholder for the welcome screen that we can clear
+    welcome_placeholder = st.empty()
+
     # ---- Handle pending query (from suggestion bubbles or chat input) ----
     if "pending_query" in st.session_state:
         user_input = st.session_state.pending_query
         del st.session_state.pending_query
+
+        # CLEAR the welcome screen + bubbles immediately before doing anything
+        welcome_placeholder.empty()
 
         # Add user message
         active_session["messages"].append({"role": "user", "content": user_input})
@@ -476,45 +501,46 @@ else:
 
     # ---- Welcome screen (empty chat, NOT processing) ----
     elif not active_session["messages"] and not st.session_state.get("is_processing", False):
-        st.markdown(
-            """
-            <div class="welcome-container">
-                <div class="welcome-greeting">Hi, I'm your Financial Assistant</div>
-                <div class="welcome-tagline">What would you like to know?</div>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
+        with welcome_placeholder.container():
+            st.markdown(
+                """
+                <div class="welcome-container">
+                    <div class="welcome-greeting">Hi, I'm your Financial Assistant</div>
+                    <div class="welcome-tagline">What would you like to know?</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
 
-        # Suggestion bubbles — only render when completely idle
-        examples = [
-            "What is the price of Apple?",
-            "Calculate EMI for 10 lakh at 8.5%",
-            "USD to INR rate",
-            "What is a savings account?",
-            "Am I eligible for a home loan?",
-            "Explain SIP vs lump sum",
-        ]
-        
-        # Render as two rows of 3 columns
-        row1 = examples[:3]
-        row2 = examples[3:]
+            # Suggestion bubbles
+            examples = [
+                "What is the price of Apple?",
+                "Calculate EMI for 10 lakh at 8.5%",
+                "USD to INR rate",
+                "What is a savings account?",
+                "Am I eligible for a home loan?",
+                "Explain SIP vs lump sum",
+            ]
+            
+            # Render as two rows of 3 columns
+            row1 = examples[:3]
+            row2 = examples[3:]
 
-        cols1 = st.columns(len(row1))
-        for i, ex in enumerate(row1):
-            with cols1[i]:
-                if st.button(ex, key=f"sug_{i}", use_container_width=True):
-                    st.session_state.pending_query = ex
-                    st.session_state.is_processing = True
-                    st.rerun()
+            cols1 = st.columns(len(row1))
+            for i, ex in enumerate(row1):
+                with cols1[i]:
+                    if st.button(ex, key=f"sug_{i}", use_container_width=True):
+                        st.session_state.pending_query = ex
+                        st.session_state.is_processing = True
+                        st.rerun()
 
-        cols2 = st.columns(len(row2))
-        for i, ex in enumerate(row2):
-            with cols2[i]:
-                if st.button(ex, key=f"sug_{i+3}", use_container_width=True):
-                    st.session_state.pending_query = ex
-                    st.session_state.is_processing = True
-                    st.rerun()
+            cols2 = st.columns(len(row2))
+            for i, ex in enumerate(row2):
+                with cols2[i]:
+                    if st.button(ex, key=f"sug_{i+3}", use_container_width=True):
+                        st.session_state.pending_query = ex
+                        st.session_state.is_processing = True
+                        st.rerun()
 
     else:
         # ---- Display Chat History ----
