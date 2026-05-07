@@ -104,10 +104,27 @@ st.markdown("""
         letter-spacing: 0.3px; padding: 0.3rem 0 0.8rem 0;
     }
 
-    /* Sidebar containers — styled by JS after DOM move */
-    .sidebar-top    { background: #0e1117; }
-    .sidebar-bottom { background: #0e1117; border-top: 1px solid rgba(255,255,255,0.06); }
+    /* Sidebar footer */
     .sidebar-footer { font-size: 0.75rem; color: #666; padding-top: 0.6rem; }
+
+    /* ---- Sticky sidebar top: brand + controls always visible ---- */
+    /* Target the stMarkdownContainer wrapping our .sidebar-top div */
+    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"]:has(.sidebar-top) {
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 100 !important;
+        background: #0e1117 !important;
+        padding-bottom: 0.5rem !important;
+    }
+    /* Sticky bottom: settings + footer */
+    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"]:has(.sidebar-bottom) {
+        position: sticky !important;
+        bottom: 0 !important;
+        z-index: 100 !important;
+        background: #0e1117 !important;
+        border-top: 1px solid rgba(255,255,255,0.07) !important;
+        padding-top: 0.3rem !important;
+    }
 
     /* ---- Popover / Expander: rounded ---- */
     details { border-radius: 14px !important; }
@@ -134,63 +151,10 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# ---- JS: reorganize sidebar into sticky-top / scrollable-middle / sticky-bottom ----
+# ---- JS: hide suggestion bubbles when spinner is visible ----
 st.markdown("""
 <script>
 (function() {
-    var debounceTimer = null;
-
-    function reorganize() {
-        var sidebar = document.querySelector('[data-testid="stSidebarContent"]');
-        if (!sidebar) return;
-
-        var topDiv  = sidebar.querySelector('.sidebar-top');
-        var histDiv = sidebar.querySelector('.sidebar-history');
-        var botDiv  = sidebar.querySelector('.sidebar-bottom');
-        if (!topDiv || !histDiv || !botDiv) return;
-
-        // Already moved? Skip (histDiv has children means we already ran)
-        if (histDiv.childElementCount > 0) return;
-
-        var kids  = Array.from(sidebar.children);
-        var ti = kids.indexOf(topDiv);
-        var hi = kids.indexOf(histDiv);
-        var bi = kids.indexOf(botDiv);
-        if (ti < 0 || hi < 0 || bi < 0) return;
-
-        // Move widgets into correct zones
-        kids.slice(ti + 1, hi).forEach(function(el) { topDiv.appendChild(el); });
-        kids.slice(hi + 1, bi).forEach(function(el) { histDiv.appendChild(el); });
-        kids.slice(bi + 1).forEach(function(el)     { botDiv.appendChild(el); });
-
-        // Apply flex layout to sidebar content div
-        sidebar.style.cssText = [
-            'display:flex', 'flex-direction:column',
-            'height:100vh', 'overflow:hidden', 'padding:0'
-        ].join('!important;') + '!important';
-
-        topDiv.style.cssText  = 'flex-shrink:0;padding:1.2rem 1rem 0.5rem;';
-        histDiv.style.cssText = [
-            'flex:1 1 0', 'min-height:0',
-            'overflow-y:auto', 'overflow-x:hidden',
-            'padding:0 0.5rem',
-            'scrollbar-width:thin',
-            'scrollbar-color:rgba(138,180,248,0.3) transparent'
-        ].join(';') + ';';
-        botDiv.style.cssText  = 'flex-shrink:0;padding:0.5rem 1rem 1rem;';
-    }
-
-    function debouncedReorganize() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(reorganize, 80);
-    }
-
-    // Run on load and after every Streamlit re-render
-    debouncedReorganize();
-    var observer = new MutationObserver(debouncedReorganize);
-    observer.observe(document.body, { childList: true, subtree: true });
-
-    // Also hide suggestion bubbles when processing
     function hideBubbles() {
         var el = document.getElementById('suggestion-bubbles');
         if (el) el.style.display = 'none';
