@@ -148,6 +148,31 @@ st.markdown("""
     /* ---- Suggestion bubble container (hidden during processing) ---- */
     .suggestion-hidden { display: none !important; }
 
+    /* ---- Rename pencil button ---- */
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"]:last-child .stButton > button {
+        padding: 0.2rem 0.4rem !important;
+        min-height: unset !important;
+        height: 28px !important;
+        width: 28px !important;
+        min-width: unset !important;
+        border-radius: 6px !important;
+        background: transparent !important;
+        border: none !important;
+        color: #9aa0a6 !important;
+        font-size: 0.75rem !important;
+        opacity: 0;
+        transition: opacity 0.15s ease;
+    }
+    /* Show pencil on row hover */
+    div[data-testid="stHorizontalBlock"]:hover div[data-testid="column"]:last-child .stButton > button {
+        opacity: 1 !important;
+    }
+    div[data-testid="stHorizontalBlock"] div[data-testid="column"]:last-child .stButton > button:hover {
+        color: #8ab4f8 !important;
+        background: rgba(138,180,248,0.1) !important;
+        opacity: 1 !important;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -204,6 +229,10 @@ if "active_session_id" not in st.session_state:
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = "chat"
+
+# Track which session is being renamed (None = none)
+if "editing_session_id" not in st.session_state:
+    st.session_state.editing_session_id = None
 
 # Helper to save dropped sessions to disk
 def persist_session_to_disk(session_id: str, session_data: dict):
@@ -302,15 +331,44 @@ with st.sidebar:
         s_data = st.session_state.sessions[s_id]
         is_active = (s_id == st.session_state.active_session_id)
         title_display = s_data["title"][:28]
-        if st.button(
-            title_display,
-            key=f"sel_{s_id}",
-            use_container_width=True,
-            type="primary" if is_active else "secondary",
-        ):
-            st.session_state.active_session_id = s_id
-            st.session_state.current_page = "chat"
-            st.rerun()
+
+        if st.session_state.editing_session_id == s_id:
+            # ---- EDIT MODE: text input + save/cancel ----
+            new_title = st.text_input(
+                "Rename",
+                value=s_data["title"],
+                key=f"rename_input_{s_id}",
+                label_visibility="collapsed",
+                max_chars=40,
+            )
+            col_save, col_cancel = st.columns([1, 1])
+            with col_save:
+                if st.button("✓", key=f"save_{s_id}", use_container_width=True):
+                    if new_title.strip():
+                        st.session_state.sessions[s_id]["title"] = new_title.strip()
+                    st.session_state.editing_session_id = None
+                    st.rerun()
+            with col_cancel:
+                if st.button("✗", key=f"cancel_{s_id}", use_container_width=True):
+                    st.session_state.editing_session_id = None
+                    st.rerun()
+        else:
+            # ---- NORMAL MODE: title button + pencil icon ----
+            col_title, col_pencil = st.columns([0.82, 0.18])
+            with col_title:
+                if st.button(
+                    title_display,
+                    key=f"sel_{s_id}",
+                    use_container_width=True,
+                    type="primary" if is_active else "secondary",
+                ):
+                    st.session_state.active_session_id = s_id
+                    st.session_state.current_page = "chat"
+                    st.rerun()
+            with col_pencil:
+                if st.button("✏", key=f"edit_{s_id}", help="Rename this chat"):
+                    st.session_state.editing_session_id = s_id
+                    st.rerun()
     st.markdown("</div>", unsafe_allow_html=True)
 
     # ---- STICKY BOTTOM: Settings + Footer ----
