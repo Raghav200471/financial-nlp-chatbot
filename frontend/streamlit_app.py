@@ -104,11 +104,41 @@ st.markdown("""
         letter-spacing: 0.3px; padding: 0.3rem 0 0.8rem 0;
     }
 
-    /* ---- Sidebar footer ---- */
-    .sidebar-footer {
-        font-size: 0.75rem; color: #666; padding-top: 1rem;
+    /* ---- Sidebar: sticky header + scrollable history + sticky footer ---- */
+    section[data-testid="stSidebar"] > div:first-child {
+        display: flex !important;
+        flex-direction: column !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+        padding: 0 !important;
+    }
+    /* Sticky top section */
+    .sidebar-top {
+        flex-shrink: 0;
+        padding: 1.2rem 1rem 0.5rem 1rem;
+    }
+    /* Scrollable chat history only */
+    .sidebar-history {
+        flex: 1 1 0;
+        overflow-y: auto;
+        padding: 0 1rem;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(138,180,248,0.2) transparent;
+    }
+    .sidebar-history::-webkit-scrollbar { width: 4px; }
+    .sidebar-history::-webkit-scrollbar-thumb {
+        background: rgba(138,180,248,0.2);
+        border-radius: 4px;
+    }
+    /* Sticky bottom section */
+    .sidebar-bottom {
+        flex-shrink: 0;
+        padding: 0.5rem 1rem 1rem 1rem;
         border-top: 1px solid rgba(255,255,255,0.06);
-        margin-top: 1rem;
+    }
+    /* Sidebar footer ---- */
+    .sidebar-footer {
+        font-size: 0.75rem; color: #666; padding-top: 0.6rem;
     }
 
     /* ---- Popover / Expander: rounded ---- */
@@ -224,8 +254,8 @@ def create_new_session():
     st.session_state.session_order.append(new_id)
     st.session_state.active_session_id = new_id
     
-    # Enforce max 5 sessions in UI
-    if len(st.session_state.session_order) > 5:
+    # Enforce max 50 sessions in UI (effectively unlimited for normal use)
+    if len(st.session_state.session_order) > 50:
         oldest_id = st.session_state.session_order.pop(0)
         persist_session_to_disk(oldest_id, st.session_state.sessions[oldest_id])
         del st.session_state.sessions[oldest_id]
@@ -238,14 +268,15 @@ active_session = st.session_state.sessions[st.session_state.active_session_id]
 # SIDEBAR — Clean, Gemini-inspired
 # ============================================================
 with st.sidebar:
-    # ---- Brand + New Chat ----
+    # ---- STICKY TOP: Brand, New Chat, Model, Personal Info ----
+    st.markdown("<div class='sidebar-top'>", unsafe_allow_html=True)
     st.markdown("<div class='brand-header'>FinChat AI</div>", unsafe_allow_html=True)
     if st.button("+ New Chat", key="new_chat_btn", use_container_width=True):
         create_new_session()
         st.session_state.current_page = "chat"
         st.rerun()
 
-    # ---- Model selector (radio, not editable) ----
+    # ---- Model selector ----
     model_choice = st.radio(
         "Model",
         options=["BERT (Advanced)", "Baseline (Fast)"],
@@ -263,16 +294,14 @@ with st.sidebar:
         key="use_rag_toggle",
         disabled=st.session_state.get("is_processing", False),
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    # ---- Chat History ----
+    # ---- SCROLLABLE MIDDLE: Chat History ----
+    st.markdown("<div class='sidebar-history'>", unsafe_allow_html=True)
     for s_id in reversed(st.session_state.session_order):
         s_data = st.session_state.sessions[s_id]
         is_active = (s_id == st.session_state.active_session_id)
-        
         title_display = s_data["title"][:28]
-        
         if st.button(
             title_display,
             key=f"sel_{s_id}",
@@ -282,10 +311,10 @@ with st.sidebar:
             st.session_state.active_session_id = s_id
             st.session_state.current_page = "chat"
             st.rerun()
+    st.markdown("</div>", unsafe_allow_html=True)
 
-    st.markdown("---")
-
-    # ---- Settings button ----
+    # ---- STICKY BOTTOM: Settings + Footer ----
+    st.markdown("<div class='sidebar-bottom'>", unsafe_allow_html=True)
     settings_icon = "Back to Chat" if st.session_state.current_page == "settings" else "Settings"
     if st.button(settings_icon, use_container_width=True, key="settings_btn"):
         if st.session_state.current_page == "settings":
@@ -293,8 +322,6 @@ with st.sidebar:
         else:
             st.session_state.current_page = "settings"
         st.rerun()
-
-    # ---- Sidebar footer ----
     st.markdown(
         "<div class='sidebar-footer'>"
         "FastAPI · SpaCy · HuggingFace<br>"
@@ -302,6 +329,7 @@ with st.sidebar:
         "</div>",
         unsafe_allow_html=True,
     )
+    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================
