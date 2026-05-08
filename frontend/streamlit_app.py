@@ -104,64 +104,107 @@ st.markdown("""
         letter-spacing: 0.3px; padding: 0.3rem 0 0.8rem 0;
     }
 
-    /* Sidebar footer */
-    .sidebar-footer { font-size: 0.75rem; color: #666; padding-top: 0.6rem; }
-
-    /* ---- Sticky sidebar top: brand + controls always visible ---- */
-    /* Target the stMarkdownContainer wrapping our .sidebar-top div */
-    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"]:has(.sidebar-top) {
-        position: sticky !important;
-        top: 0 !important;
-        z-index: 100 !important;
-        background: #0e1117 !important;
-        padding-bottom: 0.5rem !important;
-    }
-    /* Sticky bottom: settings + footer */
-    section[data-testid="stSidebar"] div[data-testid="stMarkdownContainer"]:has(.sidebar-bottom) {
-        position: sticky !important;
-        bottom: 0 !important;
-        z-index: 100 !important;
-        background: #0e1117 !important;
-        border-top: 1px solid rgba(255,255,255,0.07) !important;
-        padding-top: 0.3rem !important;
-    }
-
+    /* ---- Sidebar section labels ---- */
+    .sb-label { font-size:0.7rem; font-weight:600; color:#666; text-transform:uppercase; letter-spacing:0.08em; padding:0.5rem 0 0.2rem; }
+    /* ---- Sidebar footer ---- */
+    .sidebar-footer { font-size: 0.72rem; color: #555; padding-top: 0.5rem; }
     /* ---- Popover / Expander: rounded ---- */
     details { border-radius: 14px !important; }
     div[data-testid="stExpander"] { border-radius: 14px !important; }
-
-    /* ---- Suggestion bubble container (hidden during processing) ---- */
+    /* ---- Suggestion bubble container ---- */
     .suggestion-hidden { display: none !important; }
-
-    /* ---- Rename pencil button ---- */
+    /* ---- ⋮ menu button (last col in row) ---- */
     div[data-testid="stHorizontalBlock"] div[data-testid="column"]:last-child .stButton > button {
-        padding: 0.2rem 0.4rem !important;
-        min-height: unset !important; height: 28px !important;
-        width: 28px !important; min-width: unset !important;
+        padding: 0 !important; min-height: unset !important;
+        height: 26px !important; width: 26px !important; min-width: unset !important;
         border-radius: 6px !important; background: transparent !important;
         border: none !important; color: #9aa0a6 !important;
-        font-size: 0.75rem !important; opacity: 0;
-        transition: opacity 0.15s ease;
+        font-size: 1rem !important; line-height: 1 !important;
+        opacity: 0; transition: opacity 0.15s ease;
     }
     div[data-testid="stHorizontalBlock"]:hover div[data-testid="column"]:last-child .stButton > button { opacity: 1 !important; }
     div[data-testid="stHorizontalBlock"] div[data-testid="column"]:last-child .stButton > button:hover {
-        color: #8ab4f8 !important; background: rgba(138,180,248,0.1) !important; opacity: 1 !important;
+        color: #e8eaed !important; background: rgba(255,255,255,0.08) !important; opacity: 1 !important;
     }
+    /* ---- Context menu dropdown ---- */
+    .ctx-menu { background:#1e2124; border:1px solid rgba(255,255,255,0.1); border-radius:10px;
+        padding:0.3rem 0; margin:0.1rem 0 0.4rem 0; box-shadow:0 4px 20px rgba(0,0,0,0.4); }
+    .ctx-menu .stButton > button {
+        background: transparent !important; border: none !important;
+        color: #c9d1d9 !important; text-align: left !important;
+        padding: 0.4rem 1rem !important; width: 100% !important;
+        border-radius: 0 !important; font-size: 0.85rem !important;
+        justify-content: flex-start !important;
+    }
+    .ctx-menu .stButton > button:hover { background: rgba(255,255,255,0.07) !important; }
+    .ctx-menu-delete .stButton > button { color: #f28b82 !important; }
 
 </style>
 """, unsafe_allow_html=True)
 
-# ---- JS: hide suggestion bubbles when spinner is visible ----
+# ---- JS: sticky sidebar + hide bubbles ----
 st.markdown("""
 <script>
-(function() {
-    function hideBubbles() {
-        var el = document.getElementById('suggestion-bubbles');
-        if (el) el.style.display = 'none';
+(function(){
+    // Hide suggestion bubbles when spinner shows
+    function hideBubbles(){
+        var el=document.getElementById('suggestion-bubbles');
+        if(el) el.style.display='none';
     }
-    new MutationObserver(function() {
-        if (document.querySelector('[data-testid="stSpinner"]')) hideBubbles();
-    }).observe(document.body, { childList: true, subtree: true });
+    new MutationObserver(function(){
+        if(document.querySelector('[data-testid="stSpinner"]')) hideBubbles();
+    }).observe(document.body,{childList:true,subtree:true});
+
+    // Sticky sidebar: find real scroll container and apply flex
+    var timer;
+    function fixSidebar(){
+        var sc=document.querySelector('[data-testid="stSidebarContent"]');
+        if(!sc) return;
+        var bc=sc.firstElementChild;
+        if(!bc||bc.dataset.sbDone==='1') return;
+
+        var topEl=bc.querySelector('.sb-top');
+        var botEl=bc.querySelector('.sb-bot');
+        if(!topEl||!botEl) return;
+
+        // Walk up to find direct child of bc
+        function dc(el){ while(el&&el.parentElement!==bc) el=el.parentElement; return el; }
+        var topDC=dc(topEl), botDC=dc(botEl);
+        if(!topDC||!botDC) return;
+
+        var kids=Array.from(bc.children);
+        var ti=kids.indexOf(topDC), bi=kids.indexOf(botDC);
+        if(ti<0||bi<0||ti>=bi) return;
+
+        // Create history scroll zone
+        var hz=document.createElement('div');
+        hz.style.cssText='flex:1 1 0;min-height:0;overflow-y:auto;overflow-x:hidden;padding:0 2px;scrollbar-width:thin;scrollbar-color:rgba(138,180,248,0.25) transparent;';
+
+        // Insert hz after topDC, move history items in
+        bc.insertBefore(hz, kids[ti+1]);
+        var fresh=Array.from(bc.children);
+        var hzi=fresh.indexOf(hz);
+        var newBi=fresh.indexOf(botDC);
+        fresh.slice(hzi+1,newBi).forEach(function(el){ hz.appendChild(el); });
+
+        // Apply flex to block container
+        bc.style.cssText='display:flex;flex-direction:column;height:100%;overflow:hidden;padding:0;margin:0;';
+        sc.style.overflow='hidden';
+        sc.style.height='100vh';
+        topDC.style.flexShrink='0';
+        botDC.style.flexShrink='0';
+        bc.dataset.sbDone='1';
+    }
+
+    function debounce(){
+        clearTimeout(timer);
+        timer=setTimeout(function(){
+            var bc=document.querySelector('[data-testid="stSidebarContent"]');
+            if(bc&&bc.firstElementChild&&bc.firstElementChild.dataset.sbDone!=='1') fixSidebar();
+        },120);
+    }
+    debounce();
+    new MutationObserver(debounce).observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 """, unsafe_allow_html=True)
@@ -193,20 +236,18 @@ if "user_profile" not in st.session_state:
 if "active_session_id" not in st.session_state:
     new_id = str(uuid4())
     st.session_state.sessions[new_id] = {
-        "title": "New Chat",
-        "messages": [],
-        "debug_data": [],
-        "intent_locked": False,
+        "title": "New Chat", "messages": [], "debug_data": [],
+        "intent_locked": False, "pinned": False,
     }
     st.session_state.session_order.append(new_id)
     st.session_state.active_session_id = new_id
 
 if "current_page" not in st.session_state:
     st.session_state.current_page = "chat"
-
-# Track which session is being renamed (None = none)
 if "editing_session_id" not in st.session_state:
     st.session_state.editing_session_id = None
+if "menu_open_session_id" not in st.session_state:
+    st.session_state.menu_open_session_id = None
 
 # Helper to save dropped sessions to disk
 def persist_session_to_disk(session_id: str, session_data: dict):
@@ -245,123 +286,148 @@ def persist_session_to_disk(session_id: str, session_data: dict):
     except Exception as e:
         print(f"Failed to save chat history: {e}")
 
-# Helper to add a new session
 def create_new_session():
     new_id = str(uuid4())
     st.session_state.sessions[new_id] = {
-        "title": "New Chat",
-        "messages": [],
-        "debug_data": [],
-        "intent_locked": False,
+        "title": "New Chat", "messages": [], "debug_data": [],
+        "intent_locked": False, "pinned": False,
     }
     st.session_state.session_order.append(new_id)
     st.session_state.active_session_id = new_id
-    
-    # Enforce max 50 sessions in UI (effectively unlimited for normal use)
     if len(st.session_state.session_order) > 50:
         oldest_id = st.session_state.session_order.pop(0)
         persist_session_to_disk(oldest_id, st.session_state.sessions[oldest_id])
         del st.session_state.sessions[oldest_id]
+
+def delete_session(s_id):
+    if len(st.session_state.session_order) <= 1:
+        return  # don't delete last session
+    st.session_state.session_order.remove(s_id)
+    del st.session_state.sessions[s_id]
+    if st.session_state.active_session_id == s_id:
+        st.session_state.active_session_id = st.session_state.session_order[-1]
+    st.session_state.menu_open_session_id = None
 
 # Get current active session
 active_session = st.session_state.sessions[st.session_state.active_session_id]
 
 
 # ============================================================
-# SIDEBAR — Clean, Gemini-inspired
+# SIDEBAR
 # ============================================================
 with st.sidebar:
-    # ---- STICKY TOP: Brand, New Chat, Model, Personal Info ----
-    st.markdown("<div class='sidebar-top'>", unsafe_allow_html=True)
+
+    # ══ STICKY TOP marker (JS uses .sb-top to find boundary) ══
+    st.markdown("<div class='sb-top'></div>", unsafe_allow_html=True)
+
+    # Brand + New Chat
     st.markdown("<div class='brand-header'>FinChat AI</div>", unsafe_allow_html=True)
     if st.button("+ New Chat", key="new_chat_btn", use_container_width=True):
         create_new_session()
         st.session_state.current_page = "chat"
+        st.session_state.menu_open_session_id = None
         st.rerun()
 
-    # ---- Model selector ----
     model_choice = st.radio(
-        "Model",
-        options=["BERT (Advanced)", "Baseline (Fast)"],
-        index=0,
-        key="model_selector",
+        "Model", options=["BERT (Advanced)", "Baseline (Fast)"],
+        index=0, key="model_selector",
         disabled=st.session_state.get("is_processing", False),
-        label_visibility="collapsed",
-        horizontal=True,
+        label_visibility="collapsed", horizontal=True,
     )
-
-    # ---- Personal Info toggle ----
     use_rag_toggle = st.toggle(
         "Personal Info",
         value=st.session_state.get("use_rag_toggle", False),
         key="use_rag_toggle",
         disabled=st.session_state.get("is_processing", False),
     )
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---- SCROLLABLE MIDDLE: Chat History ----
-    st.markdown("<div class='sidebar-history'>", unsafe_allow_html=True)
-    for s_id in reversed(st.session_state.session_order):
-        s_data = st.session_state.sessions[s_id]
+    # ══ HISTORY (between sb-top and sb-bot — JS makes this scroll) ══
+
+    # Pinned sessions first
+    pinned_ids   = [s for s in reversed(st.session_state.session_order)
+                    if st.session_state.sessions[s].get("pinned")]
+    unpinned_ids = [s for s in reversed(st.session_state.session_order)
+                    if not st.session_state.sessions[s].get("pinned")]
+
+    def render_session_row(s_id):
+        s_data    = st.session_state.sessions[s_id]
         is_active = (s_id == st.session_state.active_session_id)
-        title_display = s_data["title"][:28]
+        title_display = s_data["title"][:26]
 
         if st.session_state.editing_session_id == s_id:
-            # ---- EDIT MODE: text input + save/cancel ----
-            new_title = st.text_input(
-                "Rename",
-                value=s_data["title"],
-                key=f"rename_input_{s_id}",
-                label_visibility="collapsed",
-                max_chars=40,
-            )
-            col_save, col_cancel = st.columns([1, 1])
-            with col_save:
-                if st.button("✓", key=f"save_{s_id}", use_container_width=True):
+            new_title = st.text_input("", value=s_data["title"],
+                key=f"ri_{s_id}", label_visibility="collapsed", max_chars=40)
+            cs, cc = st.columns(2)
+            with cs:
+                if st.button("✓", key=f"sv_{s_id}", use_container_width=True):
                     if new_title.strip():
                         st.session_state.sessions[s_id]["title"] = new_title.strip()
                     st.session_state.editing_session_id = None
                     st.rerun()
-            with col_cancel:
-                if st.button("✗", key=f"cancel_{s_id}", use_container_width=True):
+            with cc:
+                if st.button("✗", key=f"cc_{s_id}", use_container_width=True):
                     st.session_state.editing_session_id = None
                     st.rerun()
         else:
-            # ---- NORMAL MODE: title button + pencil icon ----
-            col_title, col_pencil = st.columns([0.82, 0.18])
-            with col_title:
-                if st.button(
-                    title_display,
-                    key=f"sel_{s_id}",
-                    use_container_width=True,
-                    type="primary" if is_active else "secondary",
-                ):
+            ct, cm = st.columns([0.82, 0.18])
+            with ct:
+                if st.button(title_display, key=f"sel_{s_id}",
+                             use_container_width=True,
+                             type="primary" if is_active else "secondary"):
                     st.session_state.active_session_id = s_id
                     st.session_state.current_page = "chat"
+                    st.session_state.menu_open_session_id = None
                     st.rerun()
-            with col_pencil:
-                if st.button("✏", key=f"edit_{s_id}", help="Rename this chat"):
-                    st.session_state.editing_session_id = s_id
+            with cm:
+                if st.button("⋮", key=f"mn_{s_id}"):
+                    st.session_state.menu_open_session_id = (
+                        None if st.session_state.menu_open_session_id == s_id else s_id
+                    )
+                    st.session_state.editing_session_id = None
                     st.rerun()
-    st.markdown("</div>", unsafe_allow_html=True)
 
-    # ---- STICKY BOTTOM: Settings + Footer ----
-    st.markdown("<div class='sidebar-bottom'>", unsafe_allow_html=True)
-    settings_icon = "Back to Chat" if st.session_state.current_page == "settings" else "Settings"
+        # Context menu dropdown
+        if st.session_state.menu_open_session_id == s_id:
+            with st.container():
+                st.markdown("<div class='ctx-menu'>", unsafe_allow_html=True)
+                if st.button("✏  Rename", key=f"do_rn_{s_id}", use_container_width=True):
+                    st.session_state.editing_session_id = s_id
+                    st.session_state.menu_open_session_id = None
+                    st.rerun()
+                pin_label = "📌  Unpin" if s_data.get("pinned") else "📌  Pin"
+                if st.button(pin_label, key=f"do_pin_{s_id}", use_container_width=True):
+                    st.session_state.sessions[s_id]["pinned"] = not s_data.get("pinned", False)
+                    st.session_state.menu_open_session_id = None
+                    st.rerun()
+                st.markdown("<div class='ctx-menu-delete'>", unsafe_allow_html=True)
+                if st.button("🗑  Delete", key=f"do_del_{s_id}", use_container_width=True):
+                    delete_session(s_id)
+                    st.rerun()
+                st.markdown("</div>", unsafe_allow_html=True)
+                st.markdown("</div>", unsafe_allow_html=True)
+
+    if pinned_ids:
+        st.markdown("<div class='sb-label'>📌 Pinned</div>", unsafe_allow_html=True)
+        for s_id in pinned_ids:
+            render_session_row(s_id)
+
+    st.markdown("<div class='sb-label'>Chats</div>", unsafe_allow_html=True)
+    for s_id in unpinned_ids:
+        render_session_row(s_id)
+
+    # ══ STICKY BOTTOM marker ══
+    st.markdown("<div class='sb-bot'></div>", unsafe_allow_html=True)
+
+    settings_icon = "← Back to Chat" if st.session_state.current_page == "settings" else "⚙  Settings & Help"
     if st.button(settings_icon, use_container_width=True, key="settings_btn"):
-        if st.session_state.current_page == "settings":
-            st.session_state.current_page = "chat"
-        else:
-            st.session_state.current_page = "settings"
+        st.session_state.current_page = (
+            "chat" if st.session_state.current_page == "settings" else "settings"
+        )
         st.rerun()
     st.markdown(
-        "<div class='sidebar-footer'>"
-        "FastAPI · SpaCy · HuggingFace<br>"
-        "Deterministic-First Architecture"
-        "</div>",
+        "<div class='sidebar-footer'>FastAPI · SpaCy · HuggingFace<br>Deterministic-First Architecture</div>",
         unsafe_allow_html=True,
     )
-    st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================
