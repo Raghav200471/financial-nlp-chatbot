@@ -43,33 +43,86 @@ async def chat(request: ChatRequest):
         cleaned = clean_text(user_message)
         intent_result = intent_detector.predict(cleaned, use_bert=request.use_bert)
         
-        from config import settings
-        if intent_result["confidence"] < settings.INTENT_CONFIDENCE_THRESHOLD:
-            intent_result["intent"] = "unknown"
-
         # Step 2: Extract entities (use original text to preserve case for tickers)
         entities_list = entity_extractor.extract(user_message)
         extracted_labels = {e["entity"] for e in entities_list}
 
-        # Step 2.5: Entity-Based Intent Correction
-        # If BERT misclassified "AAPL price" as get_exchange_rate, but we extracted a TICKER
-        if intent_result["intent"] == "get_exchange_rate" and "TICKER" in extracted_labels:
-            intent_result["intent"] = "get_stock_price"
-        elif intent_result["intent"] == "get_stock_price" and "TICKER" not in extracted_labels and ("CURRENCY" in extracted_labels or "CURRENCY_TO" in extracted_labels):
-            intent_result["intent"] = "get_exchange_rate"
+        # Step 2.5: Entity-Based Intent Promotion (runs BEFORE threshold!)
+        # When entities unambiguously reveal the true intent, trust entities over
+        # the classifier — BERT frequently confuses "What is the price of Apple?"
+        # as faq_general because of the "What is..." pattern.
+        original_intent = intent_result["intent"]
+        words = set(cleaned.split())
+        stock_keywords = {"stock", "price", "share", "market", "cost", "ticker", "quote", "trade", "value"}
+        currency_keywords = {"currency", "exchange", "rate", "convert", "forex"}
+        # Common currency codes that the NER may tag as TICKER
+        currency_codes = {"usd", "inr", "eur", "gbp", "jpy", "cny", "aud", "cad", "chf", "sgd", "aed", "sar"}
 
-        # Step 2.6: OOD (Out-Of-Domain) / Hallucination Rejection
+        # CURRENCY entities → exchange rate (check BEFORE ticker to avoid USD→stock)
+        if ("CURRENCY" in extracted_labels or "CURRENCY_TO" in extracted_labels):
+            if original_intent not in ("get_exchange_rate",):
+                print(f"[Intent Fix] {original_intent} → get_exchange_rate (CURRENCY entity found)")
+                intent_result["intent"] = "get_exchange_rate"
+                intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        # Currency keywords in query → exchange rate
+        elif words.intersection(currency_keywords) and words.intersection(currency_codes):
+            if original_intent not in ("get_exchange_rate",):
+                print(f"[Intent Fix] {original_intent} → get_exchange_rate (currency keywords found)")
+                intent_result["intent"] = "get_exchange_rate"
+                intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        # TICKER entity found → stock query (but NOT if currency words are present)
+        elif "TICKER" in extracted_labels:
+            # Guard: if the ticker value itself is a known currency code, skip
+            ticker_values = {e["value"].lower() for e in entities_list if e["entity"] == "TICKER"}
+            is_currency_ticker = bool(ticker_values.intersection(currency_codes))
+            if not is_currency_ticker and original_intent not in ("get_stock_price",):
+                print(f"[Intent Fix] {original_intent} → get_stock_price (TICKER entity found)")
+                intent_result["intent"] = "get_stock_price"
+                intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        # Stock keywords present but no ticker → still likely stock query
+        elif words.intersection(stock_keywords) and original_intent in ("faq_general", "unknown", "complex_query"):
+            print(f"[Intent Fix] {original_intent} → get_stock_price (stock keywords found)")
+            intent_result["intent"] = "get_stock_price"
+            intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        # AMOUNT + RATE → likely EMI/interest calculation
+        elif "AMOUNT" in extracted_labels and "RATE" in extracted_labels:
+            if original_intent in ("faq_general", "unknown", "complex_query"):
+                emi_keywords = {"emi", "loan", "interest", "calculate", "monthly"}
+                if words.intersection(emi_keywords):
+                    print(f"[Intent Fix] {original_intent} → calculate_emi (AMOUNT+RATE+keywords)")
+                    intent_result["intent"] = "calculate_emi"
+                    intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+
+        # Step 2.6: Confidence boost — when BERT's intent already matches keyword evidence
+        # (promotions above only fire when the intent is WRONG; this handles when intent
+        # is RIGHT but confidence is borderline, e.g. get_exchange_rate at 0.83)
+        if intent_result["intent"] == "get_exchange_rate" and (
+            "CURRENCY" in extracted_labels or "CURRENCY_TO" in extracted_labels
+            or (words.intersection(currency_keywords) and words.intersection(currency_codes))
+        ):
+            intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        elif intent_result["intent"] == "get_stock_price" and (
+            "TICKER" in extracted_labels or words.intersection(stock_keywords)
+        ):
+            intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+        elif intent_result["intent"] == "loan_eligibility" and any(
+            kw in cleaned for kw in ("loan", "eligible", "eligibility", "home loan")
+        ):
+            intent_result["confidence"] = max(intent_result["confidence"], 0.90)
+
+        # Step 2.7: Confidence threshold — only AFTER all corrections and boosts
+        from config import settings
+        if intent_result["confidence"] < settings.INTENT_CONFIDENCE_THRESHOLD:
+            intent_result["intent"] = "unknown"
+
+        # Step 2.7: OOD (Out-Of-Domain) / Hallucination Rejection
         # Neural networks (BERT) can be overconfident on completely unrelated queries (e.g. "temperature of hyderabad").
         # If the intent is an action, it MUST have either extracted entities OR basic domain keywords.
-        words = set(cleaned.split())
-        
         if intent_result["intent"] == "get_stock_price":
-            stock_keywords = {"stock", "price", "share", "market", "cost", "ticker", "quote", "trade", "value"}
             if "TICKER" not in extracted_labels and not words.intersection(stock_keywords):
                 intent_result["intent"] = "unknown"
                 
         elif intent_result["intent"] == "get_exchange_rate":
-            currency_keywords = {"currency", "exchange", "rate", "convert", "usd", "inr", "euro", "forex"}
             if "CURRENCY" not in extracted_labels and "CURRENCY_TO" not in extracted_labels and not words.intersection(currency_keywords):
                 intent_result["intent"] = "unknown"
                 
@@ -77,6 +130,7 @@ async def chat(request: ChatRequest):
             loan_keywords = {"loan", "emi", "interest", "rate", "principal", "borrow", "mortgage", "calculate", "math"}
             if not extracted_labels and not words.intersection(loan_keywords):
                 intent_result["intent"] = "unknown"
+
 
         # Step 3: Conversation manager (handles multi-turn slot filling)
         turn_result = conversation_manager.process_turn(

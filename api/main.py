@@ -20,7 +20,8 @@ PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 if PROJECT_ROOT not in sys.path:
     sys.path.insert(0, PROJECT_ROOT)
 
-from api.routes import chat, intent
+from api.routes import chat, intent, auth, users
+from api.database import connect_db, close_db
 from config import settings
 
 # ---- Global instances (populated at startup) ----
@@ -41,6 +42,9 @@ async def lifespan(app: FastAPI):
     print("\n" + "=" * 60)
     print("[START] Financial NLP Chatbot -- Starting Up")
     print("=" * 60)
+
+    # Connect to MongoDB
+    await connect_db()
 
     # Load NLP models
     from nlp.intent_detector import IntentDetector
@@ -64,6 +68,7 @@ async def lifespan(app: FastAPI):
     yield  # App runs here
 
     # Cleanup
+    await close_db()
     print("\n[STOP] Shutting down Financial NLP Chatbot...")
 
 
@@ -81,15 +86,21 @@ app = FastAPI(
 # ---- CORS Middleware ----
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # Streamlit runs on different port
+    allow_origins=[
+        "http://localhost:5173",   # React dev server (Vite)
+        "http://localhost:3000",   # fallback
+        "http://localhost:8501",   # Streamlit fallback
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 # ---- Register Routes ----
-app.include_router(chat.router, prefix="/api", tags=["Chat"])
-app.include_router(intent.router, prefix="/api", tags=["Intent"] )
+app.include_router(chat.router,  prefix="/api", tags=["Chat"])
+app.include_router(intent.router, prefix="/api", tags=["Intent"])
+app.include_router(auth.router,  tags=["Auth"])
+app.include_router(users.router, tags=["Users"])
 
 
 # ---- Root endpoint ----
