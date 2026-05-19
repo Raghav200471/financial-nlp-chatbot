@@ -8,7 +8,7 @@ export default function SettingsPage({ useGemini, setUseGemini, userProfile, set
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/health')
+    fetch('/api/health')
       .then(r => r.json())
       .then(d => setHealth(d))
       .catch(() => setHealthErr(true));

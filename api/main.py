@@ -84,13 +84,12 @@ app = FastAPI(
 )
 
 # ---- CORS Middleware ----
+_default_origins = "http://localhost:5173,http://localhost:3000,http://localhost:8501"
+_cors_origins = os.getenv("CORS_ORIGINS", _default_origins).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",   # React dev server (Vite)
-        "http://localhost:3000",   # fallback
-        "http://localhost:8501",   # Streamlit fallback
-    ],
+    allow_origins=[o.strip() for o in _cors_origins],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
