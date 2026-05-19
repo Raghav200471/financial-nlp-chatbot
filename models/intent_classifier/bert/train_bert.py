@@ -15,12 +15,16 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, classification_report
 
 # ------------------------------------------------
-# FIXED PATHS — your system paths
+# Paths — computed relative to this script's location
 # ------------------------------------------------
-BASE_DIR = r"c:\Users\ragha\OneDrive\Desktop\chat"
-TRAIN_DATA_PATH = os.path.join(BASE_DIR, "data", "intents.json")
-TEST_DATA_PATH = os.path.join(BASE_DIR, "data", "test_intents.json")
-OUTPUT_DIR = os.path.join(BASE_DIR, "models", "intent_classifier", "bert", "saved_model")
+# This script lives at: models/intent_classifier/bert/train_bert.py
+# PROJECT_ROOT is three levels up: bert/ → intent_classifier/ → models/ → project root
+PROJECT_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
+sys.path.insert(0, PROJECT_ROOT)
+
+TRAIN_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "intents.json")
+TEST_DATA_PATH = os.path.join(PROJECT_ROOT, "data", "test_intents.json")
+OUTPUT_DIR = os.path.join(PROJECT_ROOT, "models", "intent_classifier", "bert", "saved_model")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # ------------------------------------------------
